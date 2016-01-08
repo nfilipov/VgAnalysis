@@ -27,8 +27,8 @@ VgammaSkim::VgammaSkim(TString inputFileName, TString outDir, TString nameDir, T
 
       _skimmedFileName=outDir+skimPartOfName+".root";
       _fileOut = new TFile(_skimmedFileName,"recreate");
-      _fileOut->mkdir(_nameDir);
-      _fileOut->cd(_nameDir);
+      // _fileOut->mkdir(_nameDir);
+      // _fileOut->cd(_nameDir);
       _outputTree = new TTree(_nameTree,_nameTree);
       _TREE.InitOutput(_outputTree);
         //method of TInputOutputTree
@@ -66,7 +66,7 @@ void VgammaSkim::LoopOverInputTree()
   }
 
   _fileOut->cd();
-  _fileOut->cd(_nameDir);
+  // _fileOut->cd(_nameDir);
   _outputTree->Write(_nameTree);
   
   //close output files
