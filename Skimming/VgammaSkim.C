@@ -30,7 +30,7 @@ VgammaSkim::VgammaSkim(TString inputFileName, TString outDir, TString nameDir, T
       _fileOut->mkdir(_nameDir);
       _fileOut->cd(_nameDir);
       _outputTree = new TTree(_nameTree,_nameTree);
-      //      _TREE.InitOutputTree(_outputTree);
+      _TREE.InitOutput(_outputTree);
         //method of TInputOutputTree
       _hskim= new TH1F("hskim","hskim",2,0,2);    
       
@@ -39,4 +39,37 @@ VgammaSkim::VgammaSkim(TString inputFileName, TString outDir, TString nameDir, T
 VgammaSkim::~VgammaSkim()
 {
 
+}
+
+
+void VgammaSkim::LoopOverInputTree()
+{
+  TFile f(_inputFileName,"READ");
+  std::cout<<"processing "<<_inputFileName<<std::endl;
+  f.cd(_nameDir);
+  TTree* tree =(TTree*)gDirectory->Get(_nameTree);
+  std::cout<<"Got to the loop."<<std::endl;
+
+  _TREE.InitInput(tree);
+
+  Long64_t nentries = _TREE.fChain->GetEntries();
+  // if (_isDebugMode)
+  nentries=1000;
+  std::cout<<"nentries "<<nentries<<std::endl;
+
+
+  for (Long64_t entry=0; entry<nentries; entry++) {
+    if (entry < 0) break;
+    if ((entry%1000000)==0) std::cout<<"entry="<<entry<<std::endl;
+    _TREE.GetEntry(entry); // copy of ROOT's classic GetEntry
+    _outputTree->Fill();
+  }
+
+  _fileOut->cd();
+  _fileOut->cd(_nameDir);
+  _outputTree->Write(_nameTree);
+  
+  //close output files
+  _TREE.fChain = 0;
+  std::cout<<"file "<<_fileOut->GetName()<<std::endl<<" closed..."<<std::endl;
 }

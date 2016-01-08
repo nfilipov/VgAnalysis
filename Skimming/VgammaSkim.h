@@ -1,7 +1,7 @@
 #ifndef VgammaSkim_h
 #define VgammaSkim_h
 
-//#include "TInputOutputTree.h"
+#include "TInputOutputTree.h"
 
 #include <TTree.h>
 #include <TString.h>
@@ -16,23 +16,27 @@ class VgammaSkim{
 	     TString nameDir="ggNtuplizer",
 	     TString nameTree="EventTree");
   virtual ~VgammaSkim();
-  //void LoopOverInputTree();
+  void LoopOverInputTree();
   //the main function which is called from outside
   //const static int numberOfTrees=5;
   //tree [0] is input tree;
   //trees [1]-[4] are output trees
+
  private :
-  // TInputOutputTree _TREE;
+  TInputOutputTree _TREE;
   /* int _sample; */
   /* bool _isDebugMode; */
+
   TFile    *_fileOut; //output Files
   TTree    *_outputTree; //output Trees
   TH1F     *_hskim;
-  TString  _inputFileName; 
-  TString  _skimmedFileName; 
+  TString  _inputFileName;
+  TString  _skimmedFileName;
   TString  _nameDir;
   TString  _nameTree;
 
 };
 
 #endif
+
+
