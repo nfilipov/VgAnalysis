@@ -8,6 +8,8 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+
+#include <vector>
 /* #include "../Include/TEventTree.h" */
 class TInputOutputTree{
  public : 
@@ -141,6 +143,87 @@ class TInputOutputTree{
     /* vector<float> gsfPhi; */
     vector<int>    *eleFiredTrgs;
     vector<UShort_t> *eleIDbit; 
+
+    //Photon
+
+    Int_t          nPho;
+    vector<float>  *phoE;
+    vector<float>  *phoEt;
+    vector<float>  *phoEta;
+    vector<float>  *phoPhi;
+    vector<float>  *phoSCE;
+    vector<float>  *phoSCRawE;
+    /* vector<float>  phoESEn; */
+    /* vector<float>  phoESEnP1; */
+    /* vector<float>  phoESEnP2; */
+    vector<float>  *phoSCEta;
+    vector<float>  *phoSCPhi;
+    vector<float>  *phoSCEtaWidth;
+    vector<float>  *phoSCPhiWidth;
+    vector<float>  *phoSCBrem;
+    vector<int>    *phohasPixelSeed;
+    vector<int>    *phoEleVeto;
+    vector<float>  *phoR9;
+    vector<float>  *phoHoverE;
+    vector<float>  *phoSigmaIEtaIEta;
+    vector<float>  *phoSigmaIEtaIPhi;
+    vector<float>  *phoSigmaIPhiIPhi;
+    /* vector<float>  phoE1x3; */
+    /* vector<float>  phoE1x5; */
+    /* vector<float>  phoE2x2; */
+    /* vector<float>  phoE2x5Max; */
+    /* vector<float>  phoE5x5; */
+    vector<float>  *phoESEffSigmaRR;
+    vector<float>  *phoSigmaIEtaIEtaFull5x5;
+    vector<float>  *phoSigmaIEtaIPhiFull5x5;
+    vector<float>  *phoSigmaIPhiIPhiFull5x5;
+    /* vector<float>  phoE1x3Full5x5; */
+    /* vector<float>  phoE1x5Full5x5; */
+    /* vector<float>  phoE2x2Full5x5; */
+    /* vector<float>  phoE2x5MaxFull5x5; */
+    /* vector<float>  phoE5x5Full5x5; */
+    /* vector<float>  phoR9Full5x5; */
+    vector<float>  *phoPFChIso;
+    vector<float>  *phoPFPhoIso;
+    vector<float>  *phoPFNeuIso;
+    /* vector<float>  phoPFChWorstIso; */
+    /* vector<float>  phoPFChIsoFrix1; */
+    /* vector<float>  phoPFChIsoFrix2; */
+    /* vector<float>  phoPFChIsoFrix3; */
+    /* vector<float>  phoPFChIsoFrix4; */
+    /* vector<float>  phoPFChIsoFrix5; */
+    /* vector<float>  phoPFChIsoFrix6; */
+    /* vector<float>  phoPFChIsoFrix7; */
+    /* vector<float>  phoPFChIsoFrix8; */
+    /* vector<float>  phoPFPhoIsoFrix1; */
+    /* vector<float>  phoPFPhoIsoFrix2; */
+    /* vector<float>  phoPFPhoIsoFrix3; */
+    /* vector<float>  phoPFPhoIsoFrix4; */
+    /* vector<float>  phoPFPhoIsoFrix5; */
+    /* vector<float>  phoPFPhoIsoFrix6; */
+    /* vector<float>  phoPFPhoIsoFrix7; */
+    /* vector<float>  phoPFPhoIsoFrix8; */
+    /* vector<float>  phoPFNeuIsoFrix1; */
+    /* vector<float>  phoPFNeuIsoFrix2; */
+    /* vector<float>  phoPFNeuIsoFrix3; */
+    /* vector<float>  phoPFNeuIsoFrix4; */
+    /* vector<float>  phoPFNeuIsoFrix5; */
+    /* vector<float>  phoPFNeuIsoFrix6; */
+    /* vector<float>  phoPFNeuIsoFrix7; */
+    /* vector<float>  phoPFNeuIsoFrix8; */
+    /* vector<float>  phoSeedBCE; */
+    /* vector<float>  phoSeedBCEta; */
+    /* vector<float>  phoIDMVA; */
+    vector<Int_t>  *phoFiredSingleTrgs;
+    vector<Int_t>  *phoFiredDoubleTrgs;
+    /* vector<float>  phoEcalRecHitSumEtConeDR03; */
+    /* vector<float>  phohcalDepth1TowerSumEtConeDR03; */
+    /* vector<float>  phohcalDepth2TowerSumEtConeDR03; */
+    /* vector<float>  phohcalTowerSumEtConeDR03; */
+    /* vector<float>  photrkSumPtHollowConeDR03; */
+    /* vector<float>  photrkSumPtSolidConeDR03; */
+
+    vector<UShort_t> *phoIDbit;
   };
 
   
@@ -261,6 +344,90 @@ class TInputOutputTree{
   /* vector<float> gsfPhi; */
  TBranch  *b_eleFiredTrgs; // /I
  TBranch  *b_eleIDbit;  // /U
+
+ //photon
+ TBranch *b_nPho;		     
+ TBranch *b_phoE;		     
+ TBranch *b_phoEt;		     
+ TBranch *b_phoEta;		     
+ TBranch *b_phoPhi;		     
+ TBranch *b_phoSCE;		     
+ TBranch *b_phoSCRawE;		     
+ TBranch *b_phoSCEta;		     
+ TBranch *b_phoSCPhi;		     
+ TBranch *b_phoSCEtaWidth;	     
+ TBranch *b_phoSCPhiWidth;	     
+ TBranch *b_phoSCBrem;		     
+ TBranch *b_phohasPixelSeed;	     
+ TBranch *b_phoEleVeto;		     
+ TBranch *b_phoR9;		     
+ TBranch *b_phoHoverE;		     
+ TBranch *b_phoSigmaIEtaIEta;	     
+ TBranch *b_phoSigmaIEtaIPhi;	     
+ TBranch *b_phoSigmaIPhiIPhi;	     
+ TBranch *b_phoESEffSigmaRR;	     
+ TBranch *b_phoSigmaIEtaIEtaFull5x5; 
+ TBranch *b_phoSigmaIEtaIPhiFull5x5; 
+ TBranch *b_phoSigmaIPhiIPhiFull5x5; 
+ TBranch *b_phoPFChIso;		     
+ TBranch *b_phoPFPhoIso;	     
+ TBranch *b_phoPFNeuIso;	     
+ TBranch *b_phoFiredSingleTrgs;	     
+ TBranch *b_phoFiredDoubleTrgs;   
+ TBranch *b_phoIDbit;   
+
+ /* vector<float>  phoESEn; */
+ /* vector<float>  phoESEnP1; */
+ /* vector<float>  phoESEnP2; */
+
+ /* vector<float>  phoE1x3; */
+ /* vector<float>  phoE1x5; */
+ /* vector<float>  phoE2x2; */
+ /* vector<float>  phoE2x5Max; */
+ /* vector<float>  phoE5x5; */
+
+ /* vector<float>  phoE1x3Full5x5; */
+ /* vector<float>  phoE1x5Full5x5; */
+ /* vector<float>  phoE2x2Full5x5; */
+ /* vector<float>  phoE2x5MaxFull5x5; */
+ /* vector<float>  phoE5x5Full5x5; */
+ /* vector<float>  phoR9Full5x5; */
+
+ /* vector<float>  phoPFChWorstIso; */
+ /* vector<float>  phoPFChIsoFrix1; */
+ /* vector<float>  phoPFChIsoFrix2; */
+ /* vector<float>  phoPFChIsoFrix3; */
+ /* vector<float>  phoPFChIsoFrix4; */
+ /* vector<float>  phoPFChIsoFrix5; */
+ /* vector<float>  phoPFChIsoFrix6; */
+ /* vector<float>  phoPFChIsoFrix7; */
+ /* vector<float>  phoPFChIsoFrix8; */
+ /* vector<float>  phoPFPhoIsoFrix1; */
+ /* vector<float>  phoPFPhoIsoFrix2; */
+ /* vector<float>  phoPFPhoIsoFrix3; */
+ /* vector<float>  phoPFPhoIsoFrix4; */
+ /* vector<float>  phoPFPhoIsoFrix5; */
+ /* vector<float>  phoPFPhoIsoFrix6; */
+ /* vector<float>  phoPFPhoIsoFrix7; */
+ /* vector<float>  phoPFPhoIsoFrix8; */
+ /* vector<float>  phoPFNeuIsoFrix1; */
+ /* vector<float>  phoPFNeuIsoFrix2; */
+ /* vector<float>  phoPFNeuIsoFrix3; */
+ /* vector<float>  phoPFNeuIsoFrix4; */
+ /* vector<float>  phoPFNeuIsoFrix5; */
+ /* vector<float>  phoPFNeuIsoFrix6; */
+ /* vector<float>  phoPFNeuIsoFrix7; */
+ /* vector<float>  phoPFNeuIsoFrix8; */
+ /* vector<float>  phoSeedBCE; */
+ /* vector<float>  phoSeedBCEta; */
+ /* vector<float>  phoIDMVA; */
+
+ /* vector<float>  phoEcalRecHitSumEtConeDR03; */
+ /* vector<float>  phohcalDepth1TowerSumEtConeDR03; */
+ /* vector<float>  phohcalDepth2TowerSumEtConeDR03; */
+ /* vector<float>  phohcalTowerSumEtConeDR03; */
+ /* vector<float>  photrkSumPtHollowConeDR03; */
+ /* vector<float>  photrkSumPtSolidConeDR03; */
 };
 
 

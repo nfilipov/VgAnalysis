@@ -133,6 +133,87 @@ void TInputOutputTree::InitInput(TTree *tree){
   treeLeaf.eleIDbit=0; 
 
 
+  //photon
+  treeLeaf.nPho=0;
+  treeLeaf.phoE=0;
+  treeLeaf.phoEt=0;
+  treeLeaf.phoEta=0;
+  treeLeaf.phoPhi=0;
+  treeLeaf.phoSCE=0;
+  treeLeaf.phoSCRawE=0;
+  // phoESEn=0; 
+  //  phoESEnP1=0;
+  //  phoESEnP2=0; 
+  treeLeaf.phoSCEta=0;
+  treeLeaf.phoSCPhi=0;
+  treeLeaf.phoSCEtaWidth=0;
+  treeLeaf.phoSCPhiWidth=0;
+  treeLeaf.phoSCBrem=0;
+  treeLeaf.phohasPixelSeed=0;
+  treeLeaf.phoEleVeto=0;
+  treeLeaf.phoR9=0;
+  treeLeaf.phoHoverE=0;
+  treeLeaf.phoSigmaIEtaIEta=0;
+  treeLeaf.phoSigmaIEtaIPhi=0;
+  treeLeaf.phoSigmaIPhiIPhi=0;
+  /* vector<float>  phoE1x3=0; */
+  /* vector<float>  phoE1x5=0; */
+  /* vector<float>  phoE2x2=0; */
+  /* vector<float>  phoE2x5Max=0; */
+  /* vector<float>  phoE5x5=0; */
+  treeLeaf.phoESEffSigmaRR=0;
+  treeLeaf.phoSigmaIEtaIEtaFull5x5=0;
+  treeLeaf.phoSigmaIEtaIPhiFull5x5=0;
+  treeLeaf.phoSigmaIPhiIPhiFull5x5=0;
+  /* vector<float>  phoE1x3Full5x5=0; */
+  /* vector<float>  phoE1x5Full5x5=0; */
+  /* vector<float>  phoE2x2Full5x5=0; */
+  /* vector<float>  phoE2x5MaxFull5x5=0; */
+  /* vector<float>  phoE5x5Full5x5=0; */
+  /* vector<float>  phoR9Full5x5=0; */
+  treeLeaf.phoPFChIso=0;
+  treeLeaf.phoPFPhoIso=0;
+  treeLeaf.phoPFNeuIso=0;
+  /* vector<float>  phoPFChWorstIso=0; */
+  /* vector<float>  phoPFChIsoFrix1=0; */
+  /* vector<float>  phoPFChIsoFrix2=0; */
+  /* vector<float>  phoPFChIsoFrix3=0; */
+  /* vector<float>  phoPFChIsoFrix4=0; */
+  /* vector<float>  phoPFChIsoFrix5=0; */
+  /* vector<float>  phoPFChIsoFrix6=0; */
+  /* vector<float>  phoPFChIsoFrix7=0; */
+  /* vector<float>  phoPFChIsoFrix8=0; */
+  /* vector<float>  phoPFPhoIsoFrix1=0; */
+  /* vector<float>  phoPFPhoIsoFrix2=0; */
+  /* vector<float>  phoPFPhoIsoFrix3=0; */
+  /* vector<float>  phoPFPhoIsoFrix4=0; */
+  /* vector<float>  phoPFPhoIsoFrix5=0; */
+  /* vector<float>  phoPFPhoIsoFrix6=0; */
+  /* vector<float>  phoPFPhoIsoFrix7=0; */
+  /* vector<float>  phoPFPhoIsoFrix8=0; */
+  /* vector<float>  phoPFNeuIsoFrix1=0; */
+  /* vector<float>  phoPFNeuIsoFrix2=0; */
+  /* vector<float>  phoPFNeuIsoFrix3=0; */
+  /* vector<float>  phoPFNeuIsoFrix4=0; */
+  /* vector<float>  phoPFNeuIsoFrix5=0; */
+  /* vector<float>  phoPFNeuIsoFrix6=0; */
+  /* vector<float>  phoPFNeuIsoFrix7=0; */
+  /* vector<float>  phoPFNeuIsoFrix8=0; */
+  /* vector<float>  phoSeedBCE=0; */
+  /* vector<float>  phoSeedBCEta=0; */
+  /* vector<float>  phoIDMVA=0; */
+  treeLeaf.phoFiredSingleTrgs=0;
+  treeLeaf.phoFiredDoubleTrgs=0;
+  /* vector<float>  phoEcalRecHitSumEtConeDR03=0; */
+  /* vector<float>  phohcalDepth1TowerSumEtConeDR03=0; */
+  /* vector<float>  phohcalDepth2TowerSumEtConeDR03=0; */
+  /* vector<float>  phohcalTowerSumEtConeDR03=0; */
+  /* vector<float>  photrkSumPtHollowConeDR03=0; */
+  /* vector<float>  photrkSumPtSolidConeDR03=0; */
+
+  treeLeaf.phoIDbit=0;  
+
+
   if (!tree) return;
   fChain = tree;
   fCurrent = -1;
@@ -189,10 +270,42 @@ void TInputOutputTree::InitInput(TTree *tree){
   fChain->SetBranchAddress("elePFClusHcalIso",        &treeLeaf.elePFClusHcalIso, &b_elePFClusHcalIso);
   fChain->SetBranchAddress("eleFiredTrgs",                &treeLeaf.eleFiredTrgs, &b_eleFiredTrgs);
   fChain->SetBranchAddress("eleIDbit",  &treeLeaf.eleIDbit, &b_eleIDbit);
+  //photon channel 
+  fChain->SetBranchAddress("nPho"			  ,&treeLeaf.nPho	       	   ,&b_nPho);		     
+  fChain->SetBranchAddress("phoE"			  ,&treeLeaf.phoE      		   ,&b_phoE);		     
+  fChain->SetBranchAddress("phoEt"		  ,&treeLeaf.phoEt		   ,&b_phoEt);		     
+  fChain->SetBranchAddress("phoEta"		  ,&treeLeaf.phoEta		   ,&b_phoEta);		     
+  fChain->SetBranchAddress("phoPhi"		  ,&treeLeaf.phoPhi		   ,&b_phoPhi);		     
+  fChain->SetBranchAddress("phoSCE"		  ,&treeLeaf.phoSCE		   ,&b_phoSCE);		      
+  fChain->SetBranchAddress("phoSCRawE"		  ,&treeLeaf.phoSCRawE		   ,&b_phoSCRawE);		      
+  fChain->SetBranchAddress("phoSCEta"		  ,&treeLeaf.phoSCEta		   ,&b_phoSCEta);		      
+  fChain->SetBranchAddress("phoSCPhi"		  ,&treeLeaf.phoSCPhi		   ,&b_phoSCPhi);		      
+  fChain->SetBranchAddress("phoSCEtaWidth"	  ,&treeLeaf.phoSCEtaWidth	   ,&b_phoSCEtaWidth);	      
+  fChain->SetBranchAddress("phoSCPhiWidth"	  ,&treeLeaf.phoSCPhiWidth	   ,&b_phoSCPhiWidth);	      
+  fChain->SetBranchAddress("phoSCBrem"		  ,&treeLeaf.phoSCBrem		   ,&b_phoSCBrem);		      
+  fChain->SetBranchAddress("phohasPixelSeed"	  ,&treeLeaf.phohasPixelSeed	   ,&b_phohasPixelSeed);	      
+  fChain->SetBranchAddress("phoEleVeto"		  ,&treeLeaf.phoEleVeto		   ,&b_phoEleVeto);		      
+  fChain->SetBranchAddress("phoR9"		  ,&treeLeaf.phoR9		   ,&b_phoR9);		      
+  fChain->SetBranchAddress("phoHoverE"		  ,&treeLeaf.phoHoverE		   ,&b_phoHoverE);		      
+  fChain->SetBranchAddress("phoSigmaIEtaIEta"	  ,&treeLeaf.phoSigmaIEtaIEta	   ,&b_phoSigmaIEtaIEta);	      
+  fChain->SetBranchAddress("phoSigmaIEtaIPhi"	  ,&treeLeaf.phoSigmaIEtaIPhi	   ,&b_phoSigmaIEtaIPhi);	      
+  fChain->SetBranchAddress("phoSigmaIPhiIPhi"	  ,&treeLeaf.phoSigmaIPhiIPhi	   ,&b_phoSigmaIPhiIPhi);	      
+  fChain->SetBranchAddress("phoESEffSigmaRR"	  ,&treeLeaf.phoESEffSigmaRR	   ,&b_phoESEffSigmaRR);	      
+  fChain->SetBranchAddress("phoSigmaIEtaIEtaFull5x5",&treeLeaf.phoSigmaIEtaIEtaFull5x5 ,&b_phoSigmaIEtaIEtaFull5x5);   
+  fChain->SetBranchAddress("phoSigmaIEtaIPhiFull5x5",&treeLeaf.phoSigmaIEtaIPhiFull5x5 ,&b_phoSigmaIEtaIPhiFull5x5);   
+  fChain->SetBranchAddress("phoSigmaIPhiIPhiFull5x5",&treeLeaf.phoSigmaIPhiIPhiFull5x5 ,&b_phoSigmaIPhiIPhiFull5x5);   
+  fChain->SetBranchAddress("phoPFChIso"		  ,&treeLeaf.phoPFChIso		   ,&b_phoPFChIso);		      
+  fChain->SetBranchAddress("phoPFPhoIso"		  ,&treeLeaf.phoPFPhoIso		   ,&b_phoPFPhoIso);	              
+  fChain->SetBranchAddress("phoPFNeuIso"		  ,&treeLeaf.phoPFNeuIso		   ,&b_phoPFNeuIso);	              
+  fChain->SetBranchAddress("phoFiredSingleTrgs"	  ,&treeLeaf.phoFiredSingleTrgs	   ,&b_phoFiredSingleTrgs);	      
+  fChain->SetBranchAddress("phoFiredDoubleTrgs"	  ,&treeLeaf.phoFiredDoubleTrgs	   ,&b_phoFiredDoubleTrgs);  
+  fChain->SetBranchAddress("phoIDbit"               ,&treeLeaf.phoIDbit                ,&b_phoIDbit);              
+ 
 }
 
 void TInputOutputTree::InitOutput(TTree* outputTree)
 {
+  gROOT->ProcessLine("#include <vector>");
   //global event (keep all, as general rule)
   outputTree->Branch("nVtx",                 &treeLeaf.nVtx,       "nVtx/I");
   outputTree->Branch("run",                  &treeLeaf.run,        "run/I");
@@ -205,54 +318,54 @@ void TInputOutputTree::InitOutput(TTree* outputTree)
   outputTree->Branch("vtz",                  &treeLeaf.vtz,        "vtz/F"); 
   outputTree->Branch("rho",                  &treeLeaf.rho,        "rho/F");
   outputTree->Branch("rhoCentral",           &treeLeaf.rhoCentral, "rhoCentral/F");
-  outputTree->Branch("HLTEleMuX",            &treeLeaf.HLTEleMuX);
-  outputTree->Branch("HLTPho",               &treeLeaf.HLTPho);
-  outputTree->Branch("HLTJet",               &treeLeaf.HLTJet);
-  outputTree->Branch("HLTEleMuXIsPrescaled", &treeLeaf.HLTEleMuXIsPrescaled);
-  outputTree->Branch("HLTPhoIsPrescaled",    &treeLeaf.HLTPhoIsPrescaled);
-  outputTree->Branch("HLTJetIsPrescaled",    &treeLeaf.HLTJetIsPrescaled);
+  outputTree->Branch("HLTEleMuX",            &treeLeaf.HLTEleMuX, "HLTEleMuX/l");
+  outputTree->Branch("HLTPho",               &treeLeaf.HLTPho, "HLTPho/l");
+  outputTree->Branch("HLTJet",               &treeLeaf.HLTJet, "HLTJet/l");
+  outputTree->Branch("HLTEleMuXIsPrescaled", &treeLeaf.HLTEleMuXIsPrescaled, "HLTEleMuXIsPrescaled/l");
+  outputTree->Branch("HLTPhoIsPrescaled",    &treeLeaf.HLTPhoIsPrescaled, "HLTPhoIsPrescaled/l");
+  outputTree->Branch("HLTJetIsPrescaled",    &treeLeaf.HLTJetIsPrescaled, "HLTJetIsPrescaled/l");
   // electrons (only kinematics, trigger, for now)
   outputTree->Branch("nEle",                    &treeLeaf.nEle,                    "nEle/I");
-  outputTree->Branch("eleCharge",               &treeLeaf.eleCharge,               "eleCharge/I");
-  outputTree->Branch("eleChargeConsistent",     &treeLeaf.eleChargeConsistent,     "eleChargeConsistent/I");
-  outputTree->Branch("eleEn",                   &treeLeaf.eleEn,                   "eleEn/F");
-  outputTree->Branch("eleSCEn",                 &treeLeaf.eleSCEn,                 "eleSCEn/F");
+  outputTree->Branch("eleCharge",               &treeLeaf.eleCharge);
+  outputTree->Branch("eleChargeConsistent",     &treeLeaf.eleChargeConsistent);
+  outputTree->Branch("eleEn",                   &treeLeaf.eleEn);
+  outputTree->Branch("eleSCEn",                 &treeLeaf.eleSCEn);
   // outputTree->Branch("eleESEn",                 &treeLeaf.eleESEn);
   // outputTree->Branch("eleESEnP1",               &treeLeaf.eleESEnP1);
   // outputTree->Branch("eleESEnP2",               &treeLeaf.eleESEnP2);
-  outputTree->Branch("eleD0",                   &treeLeaf.eleD0, "eleD0/F");
-  outputTree->Branch("eleDz",                   &treeLeaf.eleDz, "eleDz/F");
-  outputTree->Branch("elePt",                   &treeLeaf.elePt, "elePt/F");
-  outputTree->Branch("eleEta",                  &treeLeaf.eleEta, "eleEta/F");
-  outputTree->Branch("elePhi",                  &treeLeaf.elePhi, "elePhi/F");
-  outputTree->Branch("eleR9",                   &treeLeaf.eleR9, "eleR9/F");
-  outputTree->Branch("eleSCEta",                &treeLeaf.eleSCEta, "eleSCEta/F");
-  outputTree->Branch("eleSCPhi",                &treeLeaf.eleSCPhi, "eleSCPhi/F");
-  outputTree->Branch("eleSCRawEn",              &treeLeaf.eleSCRawEn, "eleSCRawEn/F");
+  outputTree->Branch("eleD0",                   &treeLeaf.eleD0);
+  outputTree->Branch("eleDz",                   &treeLeaf.eleDz);
+  outputTree->Branch("elePt",                   &treeLeaf.elePt);
+  outputTree->Branch("eleEta",                  &treeLeaf.eleEta);
+  outputTree->Branch("elePhi",                  &treeLeaf.elePhi);
+  outputTree->Branch("eleR9",                   &treeLeaf.eleR9);
+  outputTree->Branch("eleSCEta",                &treeLeaf.eleSCEta);
+  outputTree->Branch("eleSCPhi",                &treeLeaf.eleSCPhi);
+  outputTree->Branch("eleSCRawEn",              &treeLeaf.eleSCRawEn);
   // outputTree->Branch("eleSCEtaWidth",           &treeLeaf.eleSCEtaWidth);
   // outputTree->Branch("eleSCPhiWidth",           &treeLeaf.eleSCPhiWidth);
-  outputTree->Branch("eleHoverE",               &treeLeaf.eleHoverE, "eleHoverE/F");
-  outputTree->Branch("eleEoverP",               &treeLeaf.eleEoverP, "eleEoverP/F");
+  outputTree->Branch("eleHoverE",               &treeLeaf.eleHoverE);
+  outputTree->Branch("eleEoverP",               &treeLeaf.eleEoverP);
   // outputTree->Branch("eleEoverPout",            &treeLeaf.eleEoverPout);
   // outputTree->Branch("eleEoverPInv",            &treeLeaf.eleEoverPInv);
-  outputTree->Branch("eleBrem",                 &treeLeaf.eleBrem, "eleBrem/F");
+  outputTree->Branch("eleBrem",                 &treeLeaf.eleBrem);
   // outputTree->Branch("eledEtaAtVtx",            &treeLeaf.eledEtaAtVtx);
   // outputTree->Branch("eledPhiAtVtx",            &treeLeaf.eledPhiAtVtx);
   // outputTree->Branch("eledEtaAtCalo",           &treeLeaf.eledEtaAtCalo);
-  outputTree->Branch("eleSigmaIEtaIEta",        &treeLeaf.eleSigmaIEtaIEta, "eleSigmaIEtaIEta/F");
-  outputTree->Branch("eleSigmaIEtaIPhi",        &treeLeaf.eleSigmaIEtaIPhi, "eleSigmaIEtaIPhi/F");
-  outputTree->Branch("eleSigmaIPhiIPhi",        &treeLeaf.eleSigmaIPhiIPhi, "eleSigmaIPhiIPhi/F");
-  outputTree->Branch("eleSigmaIEtaIEtaFull5x5", &treeLeaf.eleSigmaIEtaIEtaFull5x5, "eleSigmaIEtaIEtaFull5x5/F");
-  outputTree->Branch("eleSigmaIPhiIPhiFull5x5", &treeLeaf.eleSigmaIPhiIPhiFull5x5, "eleSigmaIPhiIPhi5x5/F");
-  outputTree->Branch("eleConvVeto",             &treeLeaf.eleConvVeto, "eleConvVeto/I");
-  outputTree->Branch("eleMissHits",             &treeLeaf.eleMissHits, "eleMissHits/I");
-  outputTree->Branch("eleESEffSigmaRR",         &treeLeaf.eleESEffSigmaRR, "eleESEffSigmaRR/F");
-  outputTree->Branch("elePFChIso",              &treeLeaf.elePFChIso, "elePFChIso/F");
-  outputTree->Branch("elePFPhoIso",             &treeLeaf.elePFPhoIso, "elePFPhoIso/F");
-  outputTree->Branch("elePFNeuIso",             &treeLeaf.elePFNeuIso, "elePFNeuIso/F");
-  outputTree->Branch("elePFPUIso",              &treeLeaf.elePFPUIso, "elePFPUIso/F");
-  outputTree->Branch("elePFClusEcalIso",        &treeLeaf.elePFClusEcalIso, "elePFClusEcalIso/F");
-  outputTree->Branch("elePFClusHcalIso",        &treeLeaf.elePFClusHcalIso, "elePFClusHCalIso/F");
+  outputTree->Branch("eleSigmaIEtaIEta",        &treeLeaf.eleSigmaIEtaIEta);
+  outputTree->Branch("eleSigmaIEtaIPhi",        &treeLeaf.eleSigmaIEtaIPhi);
+  outputTree->Branch("eleSigmaIPhiIPhi",        &treeLeaf.eleSigmaIPhiIPhi);
+  outputTree->Branch("eleSigmaIEtaIEtaFull5x5", &treeLeaf.eleSigmaIEtaIEtaFull5x5);
+  outputTree->Branch("eleSigmaIPhiIPhiFull5x5", &treeLeaf.eleSigmaIPhiIPhiFull5x5);
+  outputTree->Branch("eleConvVeto",             &treeLeaf.eleConvVeto);
+  outputTree->Branch("eleMissHits",             &treeLeaf.eleMissHits);
+  outputTree->Branch("eleESEffSigmaRR",         &treeLeaf.eleESEffSigmaRR);
+  outputTree->Branch("elePFChIso",              &treeLeaf.elePFChIso);
+  outputTree->Branch("elePFPhoIso",             &treeLeaf.elePFPhoIso);
+  outputTree->Branch("elePFNeuIso",             &treeLeaf.elePFNeuIso);
+  outputTree->Branch("elePFPUIso",              &treeLeaf.elePFPUIso);
+  outputTree->Branch("elePFClusEcalIso",        &treeLeaf.elePFClusEcalIso);
+  outputTree->Branch("elePFClusHcalIso",        &treeLeaf.elePFClusHcalIso);
   // outputTree->Branch("eleIDMVANonTrg",          &treeLeaf.eleIDMVANonTrg);
   // outputTree->Branch("eleIDMVATrg",             &treeLeaf.eleIDMVATrg);
   // outputTree->Branch("eledEtaseedAtVtx",        &treeLeaf.eledEtaseedAtVtx);
@@ -291,24 +404,53 @@ void TInputOutputTree::InitOutput(TTree* outputTree)
   // outputTree->Branch("eleBCSieie",                  &treeLeaf.eleBCSieie);
   // outputTree->Branch("eleBCSieip",                  &treeLeaf.eleBCSieip);
   // outputTree->Branch("eleBCSipip",                  &treeLeaf.eleBCSipip);
-  outputTree->Branch("eleFiredTrgs",                &treeLeaf.eleFiredTrgs, "eleFiredTrgs/I");
-
+  outputTree->Branch("eleFiredTrgs",                &treeLeaf.eleFiredTrgs);
   //  if (runeleIDVID)
-  outputTree->Branch("eleIDbit",  &treeLeaf.eleIDbit, "eleIDbit/s");
-
+  outputTree->Branch("eleIDbit",  &treeLeaf.eleIDbit);
   //devel only
-    // outputTree->Branch("eleESEnP1Raw",              &treeLeaf.eleESEnP1Raw);
-    // outputTree->Branch("eleESEnP2Raw",              &treeLeaf.eleESEnP2Raw);
-    // outputTree->Branch("eleESEnEta",                &treeLeaf.eleESEnEta);
-    // outputTree->Branch("eleESEnPhi",                &treeLeaf.eleESEnPhi);
-    // outputTree->Branch("eleESEnZ",                  &treeLeaf.eleESEnZ);
-    // outputTree->Branch("eleESEnP",                  &treeLeaf.eleESEnP);
-    // outputTree->Branch("eleESEnX",                  &treeLeaf.eleESEnX);
-    // outputTree->Branch("eleESEnY",                  &treeLeaf.eleESEnY);
-    // outputTree->Branch("eleESEnS",                  &treeLeaf.eleESEnS);
-    // outputTree->Branch("eleESEnE",                  &treeLeaf.eleESEnE);
-    // outputTree->Branch("nGSFTrk",                   &treeLeaf.nGSFTrk);
-    // outputTree->Branch("gsfPt",                     &treeLeaf.gsfPt);
-    // outputTree->Branch("gsfEta",                    &treeLeaf.gsfEta);
-    // outputTree->Branch("gsfPhi",                    &treeLeaf.gsfPhi);
+  // outputTree->Branch("eleESEnP1Raw",              &treeLeaf.eleESEnP1Raw);
+  // outputTree->Branch("eleESEnP2Raw",              &treeLeaf.eleESEnP2Raw);
+  // outputTree->Branch("eleESEnEta",                &treeLeaf.eleESEnEta);
+  // outputTree->Branch("eleESEnPhi",                &treeLeaf.eleESEnPhi);
+  // outputTree->Branch("eleESEnZ",                  &treeLeaf.eleESEnZ);
+  // outputTree->Branch("eleESEnP",                  &treeLeaf.eleESEnP);
+  // outputTree->Branch("eleESEnX",                  &treeLeaf.eleESEnX);
+  // outputTree->Branch("eleESEnY",                  &treeLeaf.eleESEnY);
+  // outputTree->Branch("eleESEnS",                  &treeLeaf.eleESEnS);
+  // outputTree->Branch("eleESEnE",                  &treeLeaf.eleESEnE);
+  // outputTree->Branch("nGSFTrk",                   &treeLeaf.nGSFTrk);
+  // outputTree->Branch("gsfPt",                     &treeLeaf.gsfPt);
+  // outputTree->Branch("gsfEta",                    &treeLeaf.gsfEta);
+  // outputTree->Branch("gsfPhi",                    &treeLeaf.gsfPhi);
+
+  //photon
+		     outputTree->Branch("nPho"		  ,&treeLeaf.nPho	 );		     
+  outputTree->Branch("phoE"		  ,&treeLeaf.phoE      	);		     
+  outputTree->Branch("phoEt"		  ,&treeLeaf.phoEt	 );		     
+  outputTree->Branch("phoEta"		  ,&treeLeaf.phoEta	 );		     
+  outputTree->Branch("phoPhi"		  ,&treeLeaf.phoPhi	 );		     
+  outputTree->Branch("phoSCE"		  ,&treeLeaf.phoSCE	);		      
+  outputTree->Branch("phoSCRawE"		  ,&treeLeaf.phoSCRawE	);		      
+  outputTree->Branch("phoSCEta"		  ,&treeLeaf.phoSCEta		   );		      
+  outputTree->Branch("phoSCPhi"		  ,&treeLeaf.phoSCPhi		   );		      
+  outputTree->Branch("phoSCEtaWidth"	  ,&treeLeaf.phoSCEtaWidth	   );	      
+  outputTree->Branch("phoSCPhiWidth"	  ,&treeLeaf.phoSCPhiWidth	   );	      
+  outputTree->Branch("phoSCBrem"		  ,&treeLeaf.phoSCBrem	   );		      
+  outputTree->Branch("phohasPixelSeed"	  ,&treeLeaf.phohasPixelSeed	  );	      
+  outputTree->Branch("phoEleVeto"		  ,&treeLeaf.phoEleVeto	);		      
+  outputTree->Branch("phoR9"		  ,&treeLeaf.phoR9		   );		      
+  outputTree->Branch("phoHoverE"		  ,&treeLeaf.phoHoverE	);		      
+  outputTree->Branch("phoSigmaIEtaIEta"	  ,&treeLeaf.phoSigmaIEtaIEta);	      
+  outputTree->Branch("phoSigmaIEtaIPhi"	  ,&treeLeaf.phoSigmaIEtaIPhi);	      
+  outputTree->Branch("phoSigmaIPhiIPhi"	  ,&treeLeaf.phoSigmaIPhiIPhi);	      
+  outputTree->Branch("phoESEffSigmaRR"	  ,&treeLeaf.phoESEffSigmaRR	   );	      
+  outputTree->Branch("phoSigmaIEtaIEtaFull5x5",&treeLeaf.phoSigmaIEtaIEtaFull5x5 );   
+  outputTree->Branch("phoSigmaIEtaIPhiFull5x5",&treeLeaf.phoSigmaIEtaIPhiFull5x5 );   
+  outputTree->Branch("phoSigmaIPhiIPhiFull5x5",&treeLeaf.phoSigmaIPhiIPhiFull5x5 );   
+  outputTree->Branch("phoPFChIso"		  ,&treeLeaf.phoPFChIso		 );		      
+  outputTree->Branch("phoPFPhoIso"	  ,&treeLeaf.phoPFPhoIso		 );	              
+  outputTree->Branch("phoPFNeuIso"	  ,&treeLeaf.phoPFNeuIso		 );	              
+  outputTree->Branch("phoFiredSingleTrgs"	  ,&treeLeaf.phoFiredSingleTrgs	 );	      
+  outputTree->Branch("phoFiredDoubleTrgs"	  ,&treeLeaf.phoFiredDoubleTrgs	 );  
+  outputTree->Branch("phoIDbit"             ,&treeLeaf.phoIDbit              );    
 }
