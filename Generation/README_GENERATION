@@ -1,0 +1,20 @@
+This is the sub-repo where Generation occurs.
+
+Structure:
+- Basically looks like the inside of
+GeneratorInterface/SherpaInterface/data, to tell you to work there ;-)
+- added sherpa-readable datacards for processes studied
+- corresponding sherpacks found in subdir sherpack/ ,
+- and obtained python GEN fragment in python/ .
+For example, the file Run.dat_tautaugamma[...] has its sherpack
+residing in sherpack/TTG/, and the python fragment was copied to
+python/.
+
+with this directory, You can:
+1/ re-run the sherpa level, in that case you should check the details of how to
+run sherpa, some are given here:
+https://twiki.cern.ch/twiki/bin/view/CMS/VgammaELTE
+
+2/ use the GEN fragment directly, in conjunction with the sherpack.
+
+happy generating
