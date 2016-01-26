@@ -18,9 +18,8 @@ class TInputOutputTree{
   TString nameFile_;
   TString nameDir_;
   TString nameTree_; 
-  void    InitOutput  (TTree* outputTree);
+  void    InitOutput  (TTree* outputTree, bool basic);
   void    InitInput   (TTree *tree);
- 
 
   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
   Int_t           fCurrent; //!current Tree number in a TChain
@@ -91,7 +90,7 @@ class TInputOutputTree{
     vector<float>  *elePFClusEcalIso;
     vector<float>  *elePFClusHcalIso;
     /* vector<float>  eleIDMVANonTrg; */
-    /* vector<float>  eleIDMVATrg; */
+    vector<float>  *eleIDMVATrg;
     /* vector<float>  eledEtaseedAtVtx; */
     /* vector<float>  eleE1x5; */
     /* vector<float>  eleE2x5; */
@@ -186,7 +185,7 @@ class TInputOutputTree{
     vector<float>  *phoPFChIso;
     vector<float>  *phoPFPhoIso;
     vector<float>  *phoPFNeuIso;
-    /* vector<float>  phoPFChWorstIso; */
+    vector<float>  *phoPFChWorstIso; 
     /* vector<float>  phoPFChIsoFrix1; */
     /* vector<float>  phoPFChIsoFrix2; */
     /* vector<float>  phoPFChIsoFrix3; */
@@ -213,7 +212,7 @@ class TInputOutputTree{
     /* vector<float>  phoPFNeuIsoFrix8; */
     /* vector<float>  phoSeedBCE; */
     /* vector<float>  phoSeedBCEta; */
-    /* vector<float>  phoIDMVA; */
+    vector<float>  *phoIDMVA;
     vector<Int_t>  *phoFiredSingleTrgs;
     vector<Int_t>  *phoFiredDoubleTrgs;
     /* vector<float>  phoEcalRecHitSumEtConeDR03; */
@@ -222,12 +221,22 @@ class TInputOutputTree{
     /* vector<float>  phohcalTowerSumEtConeDR03; */
     /* vector<float>  photrkSumPtHollowConeDR03; */
     /* vector<float>  photrkSumPtSolidConeDR03; */
-
     vector<UShort_t> *phoIDbit;
+  
   };
 
   
   InputTreeLeaves treeLeaf;
+  //Output tree additional leaves.
+  
+  struct OutputTreeLeaves{
+    vector<float> eeMass;
+    vector<float> eegMass;
+    vector<float> gammaEt;
+    vector<float> deltaR;
+  };
+  
+  OutputTreeLeaves outLeaf;
 
   //Global branches
   TBranch  *b_nVtx; //!
@@ -292,7 +301,7 @@ class TInputOutputTree{
  TBranch  *b_elePFClusEcalIso;
  TBranch  *b_elePFClusHcalIso;
   /* vector<float>  eleIDMVANonTrg; */
-  /* vector<float>  eleIDMVATrg; */
+ TBranch *b_eleIDMVATrg;
   /* vector<float>  eledEtaseedAtVtx; */
   /* vector<float>  eleE1x5; */
   /* vector<float>  eleE2x5; */
@@ -349,6 +358,7 @@ class TInputOutputTree{
  TBranch *b_nPho;		     
  TBranch *b_phoE;		     
  TBranch *b_phoEt;		     
+ // TBranch *b_phoEt;		     MC info
  TBranch *b_phoEta;		     
  TBranch *b_phoPhi;		     
  TBranch *b_phoSCE;		     
@@ -360,7 +370,8 @@ class TInputOutputTree{
  TBranch *b_phoSCBrem;		     
  TBranch *b_phohasPixelSeed;	     
  TBranch *b_phoEleVeto;		     
- TBranch *b_phoR9;		     
+ TBranch *b_phoR9;
+ TBranch *b_phoPFChWorstIso;
  TBranch *b_phoHoverE;		     
  TBranch *b_phoSigmaIEtaIEta;	     
  TBranch *b_phoSigmaIEtaIPhi;	     
@@ -393,7 +404,7 @@ class TInputOutputTree{
  /* vector<float>  phoE5x5Full5x5; */
  /* vector<float>  phoR9Full5x5; */
 
- /* vector<float>  phoPFChWorstIso; */
+
  /* vector<float>  phoPFChIsoFrix1; */
  /* vector<float>  phoPFChIsoFrix2; */
  /* vector<float>  phoPFChIsoFrix3; */
@@ -420,7 +431,7 @@ class TInputOutputTree{
  /* vector<float>  phoPFNeuIsoFrix8; */
  /* vector<float>  phoSeedBCE; */
  /* vector<float>  phoSeedBCEta; */
- /* vector<float>  phoIDMVA; */
+ TBranch *b_phoIDMVA;
 
  /* vector<float>  phoEcalRecHitSumEtConeDR03; */
  /* vector<float>  phohcalDepth1TowerSumEtConeDR03; */
@@ -428,6 +439,12 @@ class TInputOutputTree{
  /* vector<float>  phohcalTowerSumEtConeDR03; */
  /* vector<float>  photrkSumPtHollowConeDR03; */
  /* vector<float>  photrkSumPtSolidConeDR03; */
+
+ //extra
+ TBranch *b_eeMass;
+ TBranch *b_eegMass;
+ TBranch *b_gammaEt;
+ TBranch *b_deltaR;
 };
 
 

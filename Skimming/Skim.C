@@ -8,11 +8,12 @@
 /// data: fileToSkimName = "/afs/cern.ch/user/n/nfilipov/eos/cms/store/group/phys_smp/ggNtuples/13TeV/data/V07_04_14_00/GoldenJSON/job_data_ggNtuple_DoubleEG_Run2015D_PromptReco-v4_25ns_JSON_Golden_1560pb_miniAOD.root";
 void Skim()
 {
-  TString fileToSkimName("/afs/cern.ch/user/n/nfilipov/eos/cms/store/group/phys_smp/ggNtuples/13TeV/data/V07_04_14_00/GoldenJSON/job_data_ggNtuple_DoubleEG_Run2015D_PromptReco-v4_25ns_JSON_Golden_1560pb_miniAOD.root");
+  TString fileToSkimName("/afs/cern.ch/user/n/nfilipov/eos/cms/store/group/phys_smp/ggNtuples/13TeV/data/V07_04_14_00/GoldenJSON/job_DoubleEG_Run2015D_PR_v4_miniAOD.root");
   TString outDir("./");
   TString nameDir("ggNtuplizer");
   TString nameTree("EventTree");
-
+  bool basic = true;
+  bool isMC = false;
   TBenchmark time;
   time.Start("time");
   std::cout<<"CPU time = "<<time.GetCpuTime("time")<<", Real time = "<<time.GetRealTime("time")<<std::endl;  
@@ -22,7 +23,7 @@ void Skim()
   std::cout<<"file "<<fileToSkimName<<std::endl<<" will be skimmed"<<std::endl;
 
   //   //  VgammaSkim skimmer(TConfiguration::MUON, TConfiguration::W_GAMMA, TConfiguration::DATA,fileToSkimName);
-  VgammaSkim skimmer(fileToSkimName,outDir,nameDir,nameTree);
+  VgammaSkim skimmer(fileToSkimName,outDir,nameDir,nameTree,isMC,basic);
   skimmer.LoopOverInputTree();
    
   std::cout<<"file "<<fileToSkimName<<std::endl<<" was skimmed"<<std::endl;
