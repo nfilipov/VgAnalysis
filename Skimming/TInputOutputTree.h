@@ -18,8 +18,9 @@ class TInputOutputTree{
   TString nameFile_;
   TString nameDir_;
   TString nameTree_; 
-  void    InitOutput  (TTree* outputTree, bool basic);
-  void    InitInput   (TTree *tree);
+  bool isMC=true;
+  void    InitOutput  (TTree* outputTree, bool isMC);
+  void    InitInput   (TTree *tree, bool isMC);
 
   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
   Int_t           fCurrent; //!current Tree number in a TChain
@@ -41,10 +42,86 @@ class TInputOutputTree{
     float     rhoCentral;	
     ULong64_t HLTEleMuX;	
     ULong64_t HLTPho;		
-    ULong64_t HLTJet;		
+    ULong64_t HLTJet;  	
     ULong64_t HLTEleMuXIsPrescaled;
     ULong64_t HLTPhoIsPrescaled;
     ULong64_t HLTJetIsPrescaled;
+    //gen info (if isMC==true)
+    // (local) variables associated with tree branches
+    vector<float>    *pdf;
+    float            pthat;
+    float            processID;
+    float            genWeight;
+    float            genHT;
+
+    Int_t            nPUInfo;
+    vector<int>      *nPU;
+    vector<int>      *puBX;
+    vector<float>    *puTrue;
+
+    Int_t            nMC;          
+    vector<int>      *mcPID;
+    vector<float>    *mcVtx;
+    vector<float>    *mcVty;
+    vector<float>    *mcVtz;
+    vector<float>    *mcPt;
+    vector<float>    *mcMass;
+    vector<float>    *mcEta;
+    vector<float>    *mcPhi;
+    vector<float>    *mcE;
+    vector<float>    *mcEt;
+    vector<int>      *mcGMomPID;
+    vector<int>      *mcMomPID;
+    vector<float>    *mcMomPt;
+    vector<float>    *mcMomMass;
+    vector<float>    *mcMomEta;
+    vector<float>    *mcMomPhi;
+    vector<int>      *mcIndex;
+    vector<UShort_t> *mcStatusFlag;
+    vector<int>      *mcParentage;
+    vector<int>      *mcStatus;
+    vector<float>    *mcCalIsoDR03;
+    vector<float>    *mcTrkIsoDR03;
+    vector<float>    *mcCalIsoDR04;
+    vector<float>    *mcTrkIsoDR04;
+    //muon
+    Int_t          nMu;
+    vector<float>  *muPt;
+    vector<float>  *muEn;
+    vector<float>  *muEta;
+    vector<float>  *muPhi;
+    vector<int>    *muCharge;
+    vector<int>    *muType;
+    vector<Bool_t> *muIsLooseID;
+    vector<Bool_t> *muIsMediumID;
+    vector<Bool_t> *muIsTightID;
+    vector<Bool_t> *muIsSoftID;
+    vector<Bool_t> *muIsHighPtID;
+    //global muon? PF muon ?
+    vector<float>  *muD0;
+    vector<float>  *muDz;
+    vector<float>  *muChi2NDF;
+    /* vector<float>  *muInnerD0; */
+    /* vector<float>  *muInnerDz; */
+    vector<int>    *muTrkLayers;
+    /* vector<int>    *muPixelLayers; */
+    vector<int>    *muPixelHits;
+    /* vector<int>    *muMuonHits; */
+    vector<int>    *muStations;
+    /* vector<int>    *muMatches; */
+    /* vector<int>    *muTrkQuality; */
+    /* vector<float>  *muIsoTrk; */
+    vector<float>  *muPFChIso;
+    vector<float>  *muPFPhoIso;
+    vector<float>  *muPFNeuIso;
+    vector<float>  *muPFPUIso;
+    vector<int>    *muFiredTrgs;
+    /* vector<float>  *muInnervalidFraction; */
+    /* vector<float>  *musegmentCompatibility; */
+    /* vector<float>  *muchi2LocalPosition; */
+    /* vector<float>  *mutrkKink; */
+    /* vector<float>  *muBestTrkPtError; */
+    /* vector<float>  *muBestTrkPt; */
     //electron
     Int_t          nEle;
     vector<int>    *eleCharge;
@@ -72,8 +149,8 @@ class TInputOutputTree{
     /* vector<float>  eleEoverPout; */
     /* vector<float>  eleEoverPInv; */
     vector<float>  *eleBrem;
-    /* vector<float>  eledEtaAtVtx; */
-    /* vector<float>  eledPhiAtVtx; */
+    vector<float>  *eledEtaAtVtx;
+    vector<float>  *eledPhiAtVtx;
     /* vector<float>  eledEtaAtCalo; */
     vector<float>  *eleSigmaIEtaIEta;
     vector<float>  *eleSigmaIEtaIPhi;
@@ -104,7 +181,7 @@ class TInputOutputTree{
     /* vector<float>  eleDr03HcalDepth1TowerSumEt; */
     /* vector<float>  eleDr03HcalDepth2TowerSumEt; */
     /* vector<float>  eleDr03HcalTowerSumEt; */
-    /* vector<float>  eleDr03TkSumPt; */
+    vector<float>  *eleDr03TkSumPt;
     /* vector<float>  elecaloEnergy; */
     /* vector<float>  eleTrkdxy; */
     /* vector<float>  eleKFHits; */
@@ -222,7 +299,41 @@ class TInputOutputTree{
     /* vector<float>  photrkSumPtHollowConeDR03; */
     /* vector<float>  photrkSumPtSolidConeDR03; */
     vector<UShort_t> *phoIDbit;
-  
+
+    //jets (minimal stuff)
+    Int_t         nJet;
+    vector<float> *jetPt;
+    vector<float> *jetEn;
+    vector<float> *jetEta;
+    vector<float> *jetPhi;
+    vector<float> *jetRawPt;
+    vector<float> *jetRawEn;
+    vector<float> *jetMt;
+    vector<float> *jetJECUnc;
+    vector<int>   *jetFiredTrgs;
+    //gen-info for ak4
+    vector<int>   *jetGenJetIndex;
+    vector<float> *jetGenJetEn;
+    vector<float> *jetGenJetPt;
+    vector<float> *jetGenJetEta;
+    vector<float> *jetGenJetPhi;
+    vector<int>   *jetGenPartonID;
+    vector<float> *jetGenEn;
+    vector<float> *jetGenPt;
+    vector<float> *jetGenEta;
+    vector<float> *jetGenPhi;
+    vector<int>   *jetGenPartonMomID;
+
+    //met (minimal stuff)
+    Int_t metFilters;
+    float genMET;
+    float genMETPhi;
+    float pfMET;
+    float pfMETPhi;
+    float pfMETsumEt;
+    float pfMETmEtSig;
+    float pfMETSig;
+
   };
 
   
@@ -256,6 +367,84 @@ class TInputOutputTree{
   TBranch  *b_HLTEleMuXIsPrescaled;
   TBranch  *b_HLTPhoIsPrescaled;
   TBranch  *b_HLTJetIsPrescaled;
+  TBranch *b_nMu;
+  TBranch *b_muPt;
+  TBranch *b_muEn;
+  TBranch *b_muEta;
+  TBranch *b_muPhi;
+  TBranch *b_muCharge;
+  TBranch *b_muType;
+  TBranch *b_muIsLooseID;
+  TBranch *b_muIsMediumID;
+  TBranch *b_muIsTightID;
+  TBranch *b_muIsSoftID;
+  TBranch *b_muIsHighPtID;
+
+  //gen info (if isMC==true)
+    // (local) variables associated with tree branches
+  TBranch *b_pdf;
+  TBranch *b_pthat;
+  TBranch *b_processID;
+  TBranch *b_genWeight;
+  TBranch *b_genHT;
+
+  TBranch *b_nPUInfo;
+  TBranch *b_nPU;
+  TBranch *b_puBX;
+  TBranch *b_puTrue;
+
+  TBranch *b_nMC;          
+  TBranch *b_mcPID;
+  TBranch *b_mcVtx;
+  TBranch *b_mcVty;
+  TBranch *b_mcVtz;
+  TBranch *b_mcPt;
+  TBranch *b_mcMass;
+  TBranch *b_mcEta;
+  TBranch *b_mcPhi;
+  TBranch *b_mcE;
+  TBranch *b_mcEt;
+  TBranch *b_mcGMomPID;
+  TBranch *b_mcMomPID;
+  TBranch *b_mcMomPt;
+  TBranch *b_mcMomMass;
+  TBranch *b_mcMomEta;
+  TBranch *b_mcMomPhi;
+  TBranch *b_mcIndex;
+  TBranch *b_mcStatusFlag;
+  TBranch *b_mcParentage;
+  TBranch *b_mcStatus;
+  TBranch *b_mcCalIsoDR03;
+  TBranch *b_mcTrkIsoDR03;
+  TBranch *b_mcCalIsoDR04;
+  TBranch *b_mcTrkIsoDR04;
+
+
+    //global muon? PF muon ?
+  TBranch *b_muD0;
+  TBranch *b_muDz;
+  TBranch *b_muChi2NDF;
+    /* vector<float>  *muInnerD0; */
+    /* vector<float>  *muInnerDz; */
+  TBranch *b_muTrkLayers;
+  /* vector<int>    *muPixelLayers; */
+  TBranch *b_muPixelHits;
+  /* vector<int>    *muMuonHits; */
+  TBranch *b_muStations;
+    /* vector<int>    *muMatches; */
+    /* vector<int>    *muTrkQuality; */
+    /* vector<float>  *muIsoTrk; */
+  TBranch *b_muPFChIso;
+  TBranch *b_muPFPhoIso;
+  TBranch *b_muPFNeuIso;
+  TBranch *b_muPFPUIso;
+  TBranch *b_muFiredTrgs;
+    /* vector<float>  *muInnervalidFraction; */
+    /* vector<float>  *musegmentCompatibility; */
+    /* vector<float>  *muchi2LocalPosition; */
+    /* vector<float>  *mutrkKink; */
+    /* vector<float>  *muBestTrkPtError; */
+    /* vector<float>  *muBestTrkPt; */
   //electron branches
   TBranch  *b_nEle;		 
   TBranch  *b_eleCharge;           // /I
@@ -283,8 +472,8 @@ class TInputOutputTree{
   /* vector<float>  eleEoverPout; */
   /* vector<float>  eleEoverPInv; */
  TBranch  *b_eleBrem;
-  /* vector<float>  eledEtaAtVtx; */
-  /* vector<float>  eledPhiAtVtx; */
+ TBranch *b_eledEtaAtVtx;
+ TBranch *b_eledPhiAtVtx;
   /* vector<float>  eledEtaAtCalo; */
  TBranch  *b_eleSigmaIEtaIEta;
  TBranch  *b_eleSigmaIEtaIPhi;
@@ -315,7 +504,7 @@ class TInputOutputTree{
   /* vector<float>  eleDr03HcalDepth1TowerSumEt; */
   /* vector<float>  eleDr03HcalDepth2TowerSumEt; */
   /* vector<float>  eleDr03HcalTowerSumEt; */
-  /* vector<float>  eleDr03TkSumPt; */
+ TBranch *b_eleDr03TkSumPt;
   /* vector<float>  elecaloEnergy; */
   /* vector<float>  eleTrkdxy; */
   /* vector<float>  eleKFHits; */
@@ -358,7 +547,6 @@ class TInputOutputTree{
  TBranch *b_nPho;		     
  TBranch *b_phoE;		     
  TBranch *b_phoEt;		     
- // TBranch *b_phoEt;		     MC info
  TBranch *b_phoEta;		     
  TBranch *b_phoPhi;		     
  TBranch *b_phoSCE;		     
@@ -439,6 +627,39 @@ class TInputOutputTree{
  /* vector<float>  phohcalTowerSumEtConeDR03; */
  /* vector<float>  photrkSumPtHollowConeDR03; */
  /* vector<float>  photrkSumPtSolidConeDR03; */
+
+ //jets (minimal stuff)
+ TBranch *b_nJet;
+ TBranch *b_jetPt;
+ TBranch *b_jetEn;
+ TBranch *b_jetEta;
+ TBranch *b_jetPhi;
+ TBranch *b_jetRawPt;
+ TBranch *b_jetRawEn;
+ TBranch *b_jetMt;
+ TBranch *b_jetJECUnc;
+ TBranch *b_jetFiredTrgs;
+ TBranch *b_jetGenJetIndex;
+ TBranch *b_jetGenJetEn;
+ TBranch *b_jetGenJetPt;
+ TBranch *b_jetGenJetEta;
+ TBranch *b_jetGenJetPhi;
+ TBranch *b_jetGenPartonID;
+ TBranch *b_jetGenEn;
+ TBranch *b_jetGenPt;
+ TBranch *b_jetGenEta;
+ TBranch *b_jetGenPhi;
+ TBranch *b_jetGenPartonMomID;
+
+ //met (minimal stuff)
+ TBranch *b_metFilters;
+ TBranch *b_genMET;
+ TBranch *b_genMETPhi;
+ TBranch *b_pfMET;
+ TBranch *b_pfMETPhi;
+ TBranch *b_pfMETsumEt;
+ TBranch *b_pfMETmEtSig;
+ TBranch *b_pfMETSig;
 
  //extra
  TBranch *b_eeMass;

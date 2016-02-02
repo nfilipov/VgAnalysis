@@ -16,11 +16,12 @@ class VgammaSkim{
 	     TString outDir="./",
 	     TString nameDir="ggNtuplizer",
 	     TString nameTree="EventTree",
-	     bool isMC = false,
-	     bool basic=false);
+	     bool isMC = false
+	     );
   virtual ~VgammaSkim();
-  void LoopOverInputTree();
+  void LoopOverInputTree(bool isMC);
   float deltaR(float eta0, float eta1, float phi0, float phi1);
+
   //the main function which is called from outside
   //const static int numberOfTrees=5;
   //tree [0] is input tree;
@@ -33,7 +34,7 @@ class VgammaSkim{
 
   TFile    *_fileOut; //output Files
   TTree    *_outputTree; //output Trees
-  TH1F     *_hskim;
+  TH1F     *_hStats;
   TString  _inputFileName;
   TString  _skimmedFileName;
   TString  _nameDir;
@@ -60,6 +61,9 @@ class VgammaSkim{
  vector<float> _llm;
  vector<float> _gammaEt;
  vector<float> _deltaR;
+ float _goodPhotonsEt[100];
+ int iip;
+ float Mll;
  float _llpt[100];
  float _llphi[100];
  float _lleta[100];
