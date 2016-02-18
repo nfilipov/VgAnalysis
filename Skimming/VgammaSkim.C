@@ -1,10 +1,11 @@
 #include "VgammaSkim.h"
+#include "datasets.h"
 #include <TString.h>
 #include <TTree.h>
 #include <TH1F.h>
 #include <iostream>
 
-VgammaSkim::VgammaSkim(TString inputFileName, TString outDir, TString nameDir, TString nameTree, bool isMC)
+VgammaSkim::VgammaSkim(TString inputFileName, TString outDir, TString nameDir, TString nameTree, bool isMC,int config)
 {
  
   _nameDir=nameDir;
@@ -23,7 +24,7 @@ VgammaSkim::VgammaSkim(TString inputFileName, TString outDir, TString nameDir, T
   // skimPartOfName[_config.ELECTRON][_config.W_GAMMA]="_ElePhoSkim";// electron + photon
   // skimPartOfName[_config.ELECTRON][_config.Z_GAMMA]="_EleElePhoSkim";// two electrons + photon
 
-  TString skimPartOfName="mc_DYJetsToLL_M10-50_LLGSkim_big"; //expand this!
+  TString skimPartOfName=skimName[config]; //expand this!
 
   _skimmedFileName=outDir+skimPartOfName+".root";
   _fileOut = new TFile(_skimmedFileName,"recreate");
@@ -53,41 +54,38 @@ void VgammaSkim::LoopOverInputTree(bool isMC)
   Long64_t nentries = _TREE.fChain->GetEntries();
   std::cout<<"nentries "<<nentries<<std::endl;
   // if (_isDebugMode)
-  nentries=5000000;
+  //    nentries=1e5;
 
   for (Long64_t entry=0; entry<nentries; entry++) {
-    bool simple=true;
+    //bool simple=true;
     gWrite=false; // tells us what events to print to skim.
 
-    //not needed
-    _gammaEt.clear();//init every new custom branch at the beginning of the entry
-    _deltaR.clear();
-    _llgm.clear();
-    _llm.clear();
+    // //not needed
+    // _gammaEt.clear();//init every new custom branch at the beginning of the entry
+    // _deltaR.clear();
+    // _llgm.clear();
+    // _llm.clear();
     //
-
     if (entry < 0) break;
     if ((entry%50000)==0) std::cout<<"entry="<<entry<<std::endl;
     _TREE.GetEntry(entry); 
 
-    //basic pre-selection
-    if (_TREE.treeLeaf.nPho>=1){ 
-      if (_TREE.treeLeaf.phoEt->at(0)<15 ){
-	int _eSize = (int) _TREE.treeLeaf.elePt->size();	
-	int _mSize = (int) _TREE.treeLeaf.muPt->size();	
-	if( _eSize >1 ){
-	  if ( (_TREE.treeLeaf.HLTEleMuX>>7)&1 && _TREE.treeLeaf.elePt->at(0) > 20 ) gWrite =true;
+    //basic pre-selection corrected.
+    if (_TREE.treeLeaf.nPho>0){ //at least one photon 
+      if ( (_TREE.treeLeaf.HLTEleMuX>>7)&1 ){ //electron trigger path is fired
+	if( _TREE.treeLeaf.nEle > 1 ){ //
+	  gWrite =true;
 	}
-	if( _mSize >1){
-	  if ( (_TREE.treeLeaf.HLTEleMuX>>20)&1 && _TREE.treeLeaf.muPt->at(0) > 20 ) gWrite =true;
-	}
+	// if( _mSize >1){
+	//   if ( (_TREE.treeLeaf.HLTEleMuX>>20)&1 && _TREE.treeLeaf.muPt->at(0) > 20 ) gWrite =true;
+	// }
       }
     }
    
     if(gWrite) _outputTree->Fill();
     
     //alternative skim (simpler)
-    if(simple) _outputTree->Fill();
+    //  if(simple) _outputTree->Fill();
 
 
   }//end of entry loop

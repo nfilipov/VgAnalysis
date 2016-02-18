@@ -16,7 +16,8 @@ class VgammaSkim{
 	     TString outDir="./",
 	     TString nameDir="ggNtuplizer",
 	     TString nameTree="EventTree",
-	     bool isMC = false
+	     bool isMC = false,
+	     int config=0
 	     );
   virtual ~VgammaSkim();
   void LoopOverInputTree(bool isMC);
