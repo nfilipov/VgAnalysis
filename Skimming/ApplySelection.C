@@ -17,7 +17,7 @@ void ApplySelection()
  //this time, apply it for real
   //  TString _inputFileName("DoubleEG_Run2015D_Oct05.root"); // DoubleEG_Run2015D_PR_v4.root
   //  TString _inputFileName("DoubleEG_Run2015D_PR_v4.root"); // 
-   TString _inputFileName("DoubleEG_Run2015D_PR_v4_run258706.root"); // 
+   TString _inputFileName("/afs/cern.ch/work/n/nfilipov/private/Vgamma/CMSSW_7_4_14/src/VgAnalysis/Skimming/DoubleEG_Run2015D_PR_v4_run258706.root"); // 
    //   TString _inputFileName("DYJetsToLL_M-50.root");
   TFile *f = TFile::Open(_inputFileName,"READ");
   std::cout<<"processing "<<_inputFileName<<std::endl;
