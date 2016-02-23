@@ -17,9 +17,10 @@ void ApplySelection()
  //this time, apply it for real
   //  TString _inputFileName("DoubleEG_Run2015D_Oct05.root"); // DoubleEG_Run2015D_PR_v4.root
   //  TString _inputFileName("DoubleEG_Run2015D_PR_v4.root"); // 
-   TString _inputFileName("/afs/cern.ch/work/n/nfilipov/private/Vgamma/CMSSW_7_4_14/src/VgAnalysis/Skimming/DoubleEG_Run2015D_PR_v4_run258706.root"); // 
+  TString _inputFilePrefix("/afs/cern.ch/work/n/nfilipov/private/Vgamma/CMSSW_7_4_14/src/VgAnalysis/Skimming/");
+  TString _inputFileName("DoubleEG_Run2015D_PR_v4_run258706.root"); // 
    //   TString _inputFileName("DYJetsToLL_M-50.root");
-  TFile *f = TFile::Open(_inputFileName,"READ");
+  TFile *f = TFile::Open(_inputFilePrefix+_inputFileName,"READ");
   std::cout<<"processing "<<_inputFileName<<std::endl;
   TTree* tree =(TTree*)f->Get("EventTree");
   
@@ -372,22 +373,22 @@ void ApplySelection()
 	      ||( (abs(eleSCEta->at(ie))>1.479 && abs(eleSCEta->at(ie))<2.5) && eleIDMVATrg->at(ie)>0.610764 
 		  ))
       	    {	   
-      	      if((abs(eleSCEta->at(ie))<1.442 //   &&     /// barrel
-		  // eledEtaAtVtx->at(ie)<0.0095 &&     /// dEtaIN
-		  // eledPhiAtVtx->at(ie)<0.065 &&     /// dPhiIn
-      	  	  // eleDr03TkSumPt->at(ie)<0.18  &&    /// Trk iso
-		  // elePFClusEcalIso->at(ie)<0.37   &&   /// ecal iso
-		  // elePFClusHcalIso->at(ie)<0.25  &&   /// hcal iso
-		  // eleHoverE->at(ie)<0.09 &&           /// H/E
-		  // eleSigmaIEtaIEtaFull5x5->at(ie)<0.012
+      	      if((abs(eleSCEta->at(ie))<1.442   &&     /// barrel
+		  eledEtaAtVtx->at(ie)<0.0095 &&     /// dEtaIN
+		  eledPhiAtVtx->at(ie)<0.065 &&     /// dPhiIn
+      	  	  eleDr03TkSumPt->at(ie)/_ePt[ie]<0.18  &&    /// Trk iso
+		  elePFClusEcalIso->at(ie)/_ePt[ie]<0.37   &&   /// ecal iso
+		  elePFClusHcalIso->at(ie)/_ePt[ie]<0.25  &&   /// hcal iso
+		  eleHoverE->at(ie)<0.09 &&           /// H/E
+		  eleSigmaIEtaIEtaFull5x5->at(ie)<0.012
 		  ) /// sig_ietaieta
 		  ||
-		 (abs(eleSCEta->at(ie))>1.556 //  &&    ////endcaps
-		  // eleDr03TkSumPt->at(ie)<0.18 &&    /// trk iso
-		  // elePFClusEcalIso->at(ie)<0.45  &&  ///ecal iso
-		  // elePFClusHcalIso->at(ie)<0.28 &&   /// Hcal iso.
-		  // eleHoverE->at(ie)<0.09 &&          /// H/E
-		  // eleSigmaIEtaIEtaFull5x5->at(ie)<0.033
+		 (abs(eleSCEta->at(ie))>1.556  &&    ////endcaps
+		  eleDr03TkSumPt->at(ie)/_ePt[ie]<0.18 &&    /// trk iso
+		  elePFClusEcalIso->at(ie)/_ePt[ie]<0.45  &&  ///ecal iso
+		  elePFClusHcalIso->at(ie)/_ePt[ie]<0.28 &&   /// Hcal iso.
+		  eleHoverE->at(ie)<0.09 &&          /// H/E
+		  eleSigmaIEtaIEtaFull5x5->at(ie)<0.033
 		  )) ////Sig_ietaieta
       	   	{
 		  if(eleCharge->at(ie)==1) ////positron
@@ -414,27 +415,25 @@ void ApplySelection()
       	  _pPhi=phoPhi->at(ip); 
       	  _pEta=phoSCEta->at(ip);
       	  if( 
-	     _pPt > 15 q &&  phohasPixelSeed->at(ip)!=1 
+	     _pPt > 15  &&  phohasPixelSeed->at(ip)!=1 
 	     && ((abs(phoSCEta->at(ip))<1.442 || abs(phoSCEta->at(ip))>1.556) && abs(phoSCEta->at(ip))<2.5)
 	      )
       	    {
-      	      if((abs(phoSCEta->at(ip))<1.442   &&  /// barrel  
+      	      if((abs(phoSCEta->at(ip))<1.442    &&  /// barrel  
       		  phoPFChWorstIso->at(ip)<15 && /// pho PF charged hadron worst iso
       		  phoPFPhoIso->at(ip)<15 && /// PF Photon ECal iso
       		  phoHoverE->at(ip)<0.08 &&// photon H / E
       		  phoSigmaIEtaIEtaFull5x5->at(ip)<0.012 &&  /// sig_ietaieta
-		   phoIDMVA->at(ip) > 0.4
-		  /// photon  MVA id
+		  phoIDMVA->at(ip) > 0.4  /// photon  MVA id
       		  )||
 		 (abs(phoSCEta->at(ip))>1.556   && /// endcap  
-      		 phoR9->at(ip) > 0.85    &&       //// R9
-      		 phoPFChWorstIso->at(ip)<15 &&  /// pho PF charged hadron worst iso
-		 phoPFPhoIso->at(ip)<15 &&      /// PF Photon ECal iso
-		 phoHoverE->at(ip)<0.05 &&      // photon H / E
-      		 phoSigmaIEtaIEtaFull5x5->at(ip)<0.027 && /// sig_ietaieta
+		  phoR9->at(ip) > 0.85    &&       //// R9
+		  phoPFChWorstIso->at(ip)<15 &&  /// pho PF charged hadron worst iso
+		  phoPFPhoIso->at(ip)<15 &&      /// PF Photon ECal iso
+		  phoHoverE->at(ip)<0.05 &&      // photon H / E
+		  phoSigmaIEtaIEtaFull5x5->at(ip)<0.027 && /// sig_ietaieta
 		  phoIDMVA->at(ip) > 0.3    
-		 
-		 /// photon  MVA id
+		  /// photon  MVA id
       		 )){
       		  // start the good electron loops to match in deltaR
       		  float dr1=0, dr2=0;
@@ -497,7 +496,6 @@ void ApplySelection()
   // hMll->SaveAs("hist_Mll_"+_inputFileName);
   // hMllg->SaveAs("hist_Mllg_"+_inputFileName);
   // hPhotons->SaveAs("test_cuts.root");
-
 
   _zgt->GetDirectory()->cd();
   zgf->Write();
