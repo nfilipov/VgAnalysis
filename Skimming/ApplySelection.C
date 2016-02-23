@@ -17,7 +17,8 @@ void ApplySelection()
  //this time, apply it for real
   //  TString _inputFileName("DoubleEG_Run2015D_Oct05.root"); // DoubleEG_Run2015D_PR_v4.root
   //  TString _inputFileName("DoubleEG_Run2015D_PR_v4.root"); // 
-   TString _inputFileName("DYJetsToLL_M-50.root");
+   TString _inputFileName("DoubleEG_Run2015D_PR_v4_run258706.root"); // 
+   //   TString _inputFileName("DYJetsToLL_M-50.root");
   TFile *f = TFile::Open(_inputFileName,"READ");
   std::cout<<"processing "<<_inputFileName<<std::endl;
   TTree* tree =(TTree*)f->Get("EventTree");
@@ -55,7 +56,7 @@ void ApplySelection()
   std::vector<float> *ZeeMass=0;
   std::vector<float> *ZeePhi=0;
   std::vector<float> *ZeeMt=0;
-  TLorentzVector Zeeg[50]={}; // Zg candidates and its properties
+  TLorentzVector Zeeg[200]={}; // Zg candidates and its properties
   std::vector<float> *ZeegPt=0;
   std::vector<float> *ZeegPhi=0;
   std::vector<float> *ZeegRapidity=0;
@@ -305,11 +306,11 @@ void ApplySelection()
   // _zgt->Branch("muPhi",&muPhi);
   // _zgt->Branch("muCharge",&muCharge); 
   // _zgt->Branch("muType",&muType);
-  // _zgt->Branch("muIsLooseID",&muIsLooseID);
-  // _zgt->Branch("muIsMediumID",&muIsMediumID);
-  // _zgt->Branch("muIsTightID",&muIsTightID);
-  // _zgt->Branch("muIsSoftID",&muIsSoftID);
-  // _zgt->Branch("muIsHighPtID",&muIsHighPtID);
+  _zgt->Branch("muIsLooseID",&muIsLooseID);
+  _zgt->Branch("muIsMediumID",&muIsMediumID);
+  _zgt->Branch("muIsTightID",&muIsTightID);
+  _zgt->Branch("muIsSoftID",&muIsSoftID);
+  _zgt->Branch("muIsHighPtID",&muIsHighPtID);
   // _zgt->Branch("muD0",&muD0	   );
   // _zgt->Branch("muDz",&muDz	   );
   // _zgt->Branch("muChi2NDF",&muChi2NDF); 
@@ -342,6 +343,7 @@ void ApplySelection()
   //entry loop
   for (int entry=0; entry<nentries;entry++)
     {
+      bool Zgamma_in=false;
       ZeegMass->clear();
       ZeegPt->clear();
       ZeegRapidity->clear();
@@ -358,31 +360,35 @@ void ApplySelection()
       int nep=0;//number of plus e
       int nem=0;//number of minus e
       tree->GetEntry(entry);
+      if (nEle<2){ continue; } else {
       //START ELECTRON LOOP: Fill electronplus and electronminus branches.
       for (int ie=0; ie<nEle;ie++)
 	{
 	  _ePt[ie] = elePt->at(ie);
 	  _eEta[ie] = eleSCEta->at(ie);
 	  _ePhi[ie] = elePhi->at(ie);
-      	  if ((abs(eleSCEta->at(ie))<0.8 && ( eleIDMVATrg->at(ie)>0.972153 ))
-      	      ||((abs(eleSCEta->at(ie))>0.8 && abs(eleSCEta->at(ie))<1.479) && eleIDMVATrg->at(ie)>0.922126)
-      	      ||( (abs(eleSCEta->at(ie))>1.479 && abs(eleSCEta->at(ie))<2.5) && eleIDMVATrg->at(ie)>0.610764 ))
+      	  if ((  abs(eleSCEta->at(ie))<0.8 && ( eleIDMVATrg->at(ie)>0.972153 ))
+	      ||((abs(eleSCEta->at(ie))>0.8 && abs(eleSCEta->at(ie))<1.479) && eleIDMVATrg->at(ie)>0.922126)
+	      ||( (abs(eleSCEta->at(ie))>1.479 && abs(eleSCEta->at(ie))<2.5) && eleIDMVATrg->at(ie)>0.610764 
+		  ))
       	    {	   
-      	      if((abs(eleSCEta->at(ie))<1.442 &&     /// barrel
-      	  	  eledEtaAtVtx->at(ie)<0.0095 &&     /// dEtaIN
-      	  	  eledPhiAtVtx->at(ie)<0.065 &&     /// dPhiIn
-      	  	  eleDr03TkSumPt->at(ie)<0.18  &&    /// Trk iso
-      	  	  // elePFClusEcalIso->at(ie)<0.37  &&   /// ecal iso
-      	  	  // elePFClusHcalIso->at(ie)<0.25  &&   /// hcal iso
-      	  	  eleHoverE->at(ie)<0.09 &&           /// H/E
-      	  	  eleSigmaIEtaIEtaFull5x5->at(ie)<0.012) /// sig_ietaieta
-		 ||
-      	  	 (abs(eleSCEta->at(ie))>1.556 &&    ////endcaps
-      	  	  eleDr03TkSumPt->at(ie)<0.18  &&    /// trk iso
+      	      if((abs(eleSCEta->at(ie))<1.442 //   &&     /// barrel
+		  // eledEtaAtVtx->at(ie)<0.0095 &&     /// dEtaIN
+		  // eledPhiAtVtx->at(ie)<0.065 &&     /// dPhiIn
+      	  	  // eleDr03TkSumPt->at(ie)<0.18  &&    /// Trk iso
+		  // elePFClusEcalIso->at(ie)<0.37   &&   /// ecal iso
+		  // elePFClusHcalIso->at(ie)<0.25  &&   /// hcal iso
+		  // eleHoverE->at(ie)<0.09 &&           /// H/E
+		  // eleSigmaIEtaIEtaFull5x5->at(ie)<0.012
+		  ) /// sig_ietaieta
+		  ||
+		 (abs(eleSCEta->at(ie))>1.556 //  &&    ////endcaps
+		  // eleDr03TkSumPt->at(ie)<0.18 &&    /// trk iso
 		  // elePFClusEcalIso->at(ie)<0.45  &&  ///ecal iso
-      	  	  // elePFClusHcalIso->at(ie)<0.28 &&   /// Hcal iso.
-      	  	  eleHoverE->at(ie)<0.09 &&          /// H/E
-      	  	  eleSigmaIEtaIEtaFull5x5->at(ie)<0.033)) ////Sig_ietaieta
+		  // elePFClusHcalIso->at(ie)<0.28 &&   /// Hcal iso.
+		  // eleHoverE->at(ie)<0.09 &&          /// H/E
+		  // eleSigmaIEtaIEtaFull5x5->at(ie)<0.033
+		  )) ////Sig_ietaieta
       	   	{
 		  if(eleCharge->at(ie)==1) ////positron
       	  	    {
@@ -397,29 +403,9 @@ void ApplySelection()
       	    }
       	}
       
-      // //   START Z CANDIDATE
-      // int nz=0;
-      // for (int ie1=0; ie1<nep; ie1++)
-      // 	{
-      // 	  for (int ie2=0; ie2< nem; ie2++)
-      // 	    {
-      // 	      //kinematic cut of electrons
-      // 	      if ((leptonPlus[ie1].Pt() > 20 && leptonMinus[ie2].Pt() > 15)||(leptonPlus[ie1].Pt() > 15 && leptonMinus[ie2].Pt() > 20))
-      // 		{
-      // 		  Zee[nz]=leptonPlus[ie1]+leptonMinus[ie2];
-		  
-      // 		  ZeePt[nz]=Zee[nz].Pt();
-      // 		  ZeeRapidity[nz]=Zee[nz].Rapidity();
-      // 		  ZeePhi[nz]=Zee[nz].Phi();
-      // 		  ZeeMass[nz]=Zee[nz].M();
-      // 		  ZeeMt[nz]=Zee[nz].Mt();
-      // 		  nz++;
-      // 		}
-      // 	    }
-      // 	}
-
+     
       int ig=0;
-      bool Zgamma_in=false;
+   
       //START Zgamma candidate
       //start photon loop
       for (int ip =0 ; ip<nPho;ip++)
@@ -427,22 +413,28 @@ void ApplySelection()
       	  _pPt=phoEt->at(ip); 
       	  _pPhi=phoPhi->at(ip); 
       	  _pEta=phoSCEta->at(ip);
-      	  if(_pPt > 15 && phohasPixelSeed->at(ip)!=1 && ((abs(phoSCEta->at(ip))<1.442 || abs(phoSCEta->at(ip))>1.556) && abs(phoSCEta->at(ip))<2.5))
+      	  if( 
+	     _pPt > 15 q &&  phohasPixelSeed->at(ip)!=1 
+	     && ((abs(phoSCEta->at(ip))<1.442 || abs(phoSCEta->at(ip))>1.556) && abs(phoSCEta->at(ip))<2.5)
+	      )
       	    {
-      	      if((abs(phoSCEta->at(ip))<1.442 &&  /// barrel  
+      	      if((abs(phoSCEta->at(ip))<1.442   &&  /// barrel  
       		  phoPFChWorstIso->at(ip)<15 && /// pho PF charged hadron worst iso
       		  phoPFPhoIso->at(ip)<15 && /// PF Photon ECal iso
       		  phoHoverE->at(ip)<0.08 &&// photon H / E
-      		  phoSigmaIEtaIEtaFull5x5->at(ip)<0.012 && /// sig_ietaieta
-      		  phoIDMVA->at(ip) > 0.4 /// photon  MVA id
+      		  phoSigmaIEtaIEtaFull5x5->at(ip)<0.012 &&  /// sig_ietaieta
+		   phoIDMVA->at(ip) > 0.4
+		  /// photon  MVA id
       		  )||
-      		(abs(phoSCEta->at(ip))>1.556 && /// endcap  
+		 (abs(phoSCEta->at(ip))>1.556   && /// endcap  
       		 phoR9->at(ip) > 0.85    &&       //// R9
       		 phoPFChWorstIso->at(ip)<15 &&  /// pho PF charged hadron worst iso
-      		 phoPFPhoIso->at(ip)<15 &&      /// PF Photon ECal iso
-      		 phoHoverE->at(ip)<0.05 &&      // photon H / E
+		 phoPFPhoIso->at(ip)<15 &&      /// PF Photon ECal iso
+		 phoHoverE->at(ip)<0.05 &&      // photon H / E
       		 phoSigmaIEtaIEtaFull5x5->at(ip)<0.027 && /// sig_ietaieta
-      		 phoIDMVA->at(ip) > 0.3         /// photon  MVA id
+		  phoIDMVA->at(ip) > 0.3    
+		 
+		 /// photon  MVA id
       		 )){
       		  // start the good electron loops to match in deltaR
       		  float dr1=0, dr2=0;
@@ -453,36 +445,38 @@ void ApplySelection()
       			{ /// DeltaR(e+,gamma) > 0.7
       			  for(int j=0;j<nem;j++ )
       			    {
-      			      dr2=deltaR(leptonMinus[j].Eta(),phoSCEta->at(ip),leptonMinus[i].Phi(),phoPhi->at(ip));
+      			      dr2=deltaR(leptonMinus[j].Eta(),phoSCEta->at(ip),leptonMinus[j].Phi(),phoPhi->at(ip));
       			      if(dr2>0.7)
       				{
-      				  /// DeltaR(e-,gamma) > 0.7
-      				  ///can build the tmp Z. then Zg
-      				  TLorentzVector tmpZ;
-      				  tmpZ = leptonPlus[i]+leptonMinus[j];
-      				  if(tmpZ.M() > 50) // check the Z mass requirement
-      				    {
-      				      photon[ip].SetPtEtaPhiM(_pPt,_pEta,_pPhi,_gMass);
-      				      Zeeg[ig]=photon[ip]+tmpZ;
-      				      ZeegMass->push_back(Zeeg[ig].M());
-      				      ZeegPt->push_back(Zeeg[ig].Pt());
-      				      ZeegRapidity->push_back(Zeeg[ig].Rapidity());
-      				      ZeegPhi->push_back(Zeeg[ig].Phi());
-      				      ZeegMt->push_back(Zeeg[ig].Mt());
-      				      ZeePt->push_back(tmpZ.Pt());
-      				      ZeeRapidity->push_back(tmpZ.Rapidity());
-      				      ZeePhi->push_back(tmpZ.Phi());
-      				      ZeeMass->push_back(tmpZ.M());
-      				      ZeeMt->push_back(tmpZ.Mt());
-      				      std::cout<<entry<< "th event, "<<" pt("<<i<<") = "<<leptonPlus[i].Pt()<<", pt("<<j<<") = "<<leptonPlus[j].Pt()<<",  Mll="<<tmpZ.M()<<" GeV/c2, phoEt("<<ip<<")="<<_pPt<<" GeV/c, and "<<ig<<"th Zg candidate, mass="<<Zeeg[ig].M()<<" GeV/c2"<<std::endl;
-      				      PhotonPt->push_back(_pPt);
-      				      PhotonEta->push_back(_pEta);
-      				      PhotonPhi->push_back(_pPhi);
-      				      ig++;
-      				      Zgamma_in=true;
-      				      // Zgamma_in = true;
-      				      myfile<<event<<" "<<lumis<<" "<<run<<endl;
-      				    }/// Z mass cut.
+				  if ((leptonPlus[i].Pt() > 20 && leptonMinus[j].Pt() > 15)||(leptonPlus[i].Pt() > 15 && leptonMinus[j].Pt() > 20)){
+				    /// DeltaR(e-,gamma) > 0.7
+				    ///can build the tmp Z. then Zg
+				    TLorentzVector tmpZ;
+				    tmpZ = leptonPlus[i]+leptonMinus[j];
+				    if(tmpZ.M() > 50) // check the Z mass requirement
+				      {
+					photon[ip].SetPtEtaPhiM(_pPt,_pEta,_pPhi,_gMass);
+					Zeeg[ig]=photon[ip]+tmpZ;
+					ZeegMass->push_back(Zeeg[ig].M());
+					ZeegPt->push_back(Zeeg[ig].Pt());
+					ZeegRapidity->push_back(Zeeg[ig].Rapidity());
+					ZeegPhi->push_back(Zeeg[ig].Phi());
+					ZeegMt->push_back(Zeeg[ig].Mt());
+					ZeePt->push_back(tmpZ.Pt());
+					ZeeRapidity->push_back(tmpZ.Rapidity());
+					ZeePhi->push_back(tmpZ.Phi());
+					ZeeMass->push_back(tmpZ.M());
+					ZeeMt->push_back(tmpZ.Mt());
+					std::cout<<entry<< "th event, "<<" pt("<<i<<") = "<<leptonPlus[i].Pt()<<", pt("<<j<<") = "<<leptonMinus[j].Pt()<<",  Mll="<<tmpZ.M()<<" GeV/c2, phoEt("<<ip<<")="<<_pPt<<" GeV/c, and "<<ig<<"th Zg candidate, mass="<<Zeeg[ig].M()<<" GeV/c2"<<std::endl;
+					PhotonPt->push_back(_pPt);
+					PhotonEta->push_back(_pEta);
+					PhotonPhi->push_back(_pPhi);
+					ig++;
+					Zgamma_in=true;
+					// Zgamma_in = true;
+					myfile<<event<<" "<<lumis<<" "<<run<<endl;
+				      }/// Z mass cut.
+				  } // lepton pT
       				}/// Z mass cut.
       			      /// deltaR of second lepton
       			    }// second lepton loop
@@ -493,7 +487,8 @@ void ApplySelection()
       	}////end pho loop
 
       if(Zgamma_in) _zgt->Fill(); //if there's at least one Zg in the event
-    
+      }
+
     }//end of entry loop
 
   //  myfile.close();
