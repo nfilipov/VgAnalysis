@@ -26,7 +26,7 @@ class VgammaSkim{
   //the main function which is called from outside
   //const static int numberOfTrees=5;
   //tree [0] is input tree;
-  //trees [1]-[4] are output trees
+  ///trees [1]-[4] are output trees
 
  private :
   TInputOutputTree _TREE;

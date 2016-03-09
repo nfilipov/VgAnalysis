@@ -249,7 +249,7 @@ void TInputOutputTree::InitInput(TTree *tree, bool isMC){
   /* vector<float>  phoE2x2Full5x5=0; */
   /* vector<float>  phoE2x5MaxFull5x5=0; */
   /* vector<float>  phoE5x5Full5x5=0; */
-  /* vector<float>  phoR9Full5x5=0; */
+  treeLeaf.phoR9Full5x5=0;
   treeLeaf.phoPFChIso=0;
   treeLeaf.phoPFChWorstIso=0;
   treeLeaf.phoPFPhoIso=0;
@@ -472,6 +472,7 @@ void TInputOutputTree::InitInput(TTree *tree, bool isMC){
   fChain->SetBranchAddress("phohasPixelSeed"	  ,&treeLeaf.phohasPixelSeed	   ,&b_phohasPixelSeed);	      
   fChain->SetBranchAddress("phoEleVeto"		  ,&treeLeaf.phoEleVeto		   ,&b_phoEleVeto);		      
   fChain->SetBranchAddress("phoR9"		  ,&treeLeaf.phoR9		   ,&b_phoR9);		      
+  fChain->SetBranchAddress("phoR9Full5x5"	  ,&treeLeaf.phoR9Full5x5	   ,&b_phoR9Full5x5);		      
   fChain->SetBranchAddress("phoHoverE"		  ,&treeLeaf.phoHoverE		   ,&b_phoHoverE);		      
   fChain->SetBranchAddress("phoSigmaIEtaIEta"	  ,&treeLeaf.phoSigmaIEtaIEta	   ,&b_phoSigmaIEtaIEta);	      
   fChain->SetBranchAddress("phoSigmaIEtaIPhi"	  ,&treeLeaf.phoSigmaIEtaIPhi	   ,&b_phoSigmaIEtaIPhi);	      
@@ -561,7 +562,7 @@ void TInputOutputTree::InitOutput(TTree* outputTree,bool isMC)
     outputTree->Branch("genHT",&treeLeaf.genHT);
 
     outputTree->Branch("nPUInfo",&treeLeaf.nPUInfo);
-    outputTree->Branch("nPU",&treeLeaf.nPU);
+    outputTree->Branch("nPU",&treeLeaf.nPU); //// fix this, should have this out of isMC.
     outputTree->Branch("puBX",&treeLeaf.puBX);
     outputTree->Branch("puTrue",&treeLeaf.puTrue);
 
@@ -729,6 +730,7 @@ void TInputOutputTree::InitOutput(TTree* outputTree,bool isMC)
   outputTree->Branch("phohasPixelSeed"	  ,&treeLeaf.phohasPixelSeed	  );	      
   outputTree->Branch("phoEleVeto"		  ,&treeLeaf.phoEleVeto	);		      
   outputTree->Branch("phoR9"		  ,&treeLeaf.phoR9		   );		      
+  outputTree->Branch("phoR9Full5x5"	  ,&treeLeaf.phoR9Full5x5	   );		      
   outputTree->Branch("phoHoverE"		  ,&treeLeaf.phoHoverE	);		      
   outputTree->Branch("phoSigmaIEtaIEta"	  ,&treeLeaf.phoSigmaIEtaIEta);	      
   outputTree->Branch("phoSigmaIEtaIPhi"	  ,&treeLeaf.phoSigmaIEtaIPhi);	      

@@ -7,7 +7,7 @@
 
 void Skim()
 {
-  int nS=6; // 0,1,2 :dielectron. 3,4,5:dimuon. 6:DYJets, 7:ZZ. 
+  int nS=2; // 0,1,2 :dielectron. 3,4,5:dimuon. 6:DYJets, 7:ZZ. 
   TString fileToSkimName(ggFile[nS]);
 
   TString outDir("./");

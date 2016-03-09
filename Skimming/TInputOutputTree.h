@@ -258,7 +258,7 @@ class TInputOutputTree{
     /* vector<float>  phoE2x2Full5x5; */
     /* vector<float>  phoE2x5MaxFull5x5; */
     /* vector<float>  phoE5x5Full5x5; */
-    /* vector<float>  phoR9Full5x5; */
+    vector<float>  *phoR9Full5x5;
     vector<float>  *phoPFChIso;
     vector<float>  *phoPFPhoIso;
     vector<float>  *phoPFNeuIso;
@@ -590,7 +590,7 @@ class TInputOutputTree{
  /* vector<float>  phoE2x2Full5x5; */
  /* vector<float>  phoE2x5MaxFull5x5; */
  /* vector<float>  phoE5x5Full5x5; */
- /* vector<float>  phoR9Full5x5; */
+  TBranch *b_phoR9Full5x5;
 
 
  /* vector<float>  phoPFChIsoFrix1; */
