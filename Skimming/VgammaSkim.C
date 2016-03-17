@@ -26,7 +26,7 @@ VgammaSkim::VgammaSkim(TString inputFileName, TString outDir, TString nameDir, T
 
   TString skimPartOfName=skimName[config]; //expand this!
 
-  _skimmedFileName=outDir+skimPartOfName+"_run258706.root";
+  _skimmedFileName=outDir+skimPartOfName+".root";
   _fileOut = new TFile(_skimmedFileName,"recreate");
   // _fileOut->mkdir(_nameDir); // removed this to lose the useless folder
   // _fileOut->cd(_nameDir);   // so that trees can be directly accessed.
@@ -44,7 +44,7 @@ VgammaSkim::~VgammaSkim()
 
 void VgammaSkim::LoopOverInputTree(bool isMC)
 {
-  TFile f(_inputFileName,"READ");
+  TFile f(_inputFileName);
   std::cout<<"processing "<<_inputFileName<<std::endl;
   f.cd(_nameDir);
   TTree* tree =(TTree*)gDirectory->Get(_nameTree);
@@ -56,7 +56,9 @@ void VgammaSkim::LoopOverInputTree(bool isMC)
   // if (_isDebugMode)
   //  nentries=1e5;
 
-  for (Long64_t entry=17023372; entry<19037962; entry++) {
+  //  for (Long64_t entry=17023372; entry<19037962; entry++) { //electrons
+  // for (Long64_t entry=16108076; entry<17225997; entry++){  //muons in run 258706
+  for (Long64_t entry=0; entry<nentries; entry++){  //general setup
     //bool simple=true;
     gWrite=false; // tells us what events to print to skim.
 
@@ -70,19 +72,19 @@ void VgammaSkim::LoopOverInputTree(bool isMC)
     if ((entry%50000)==0) std::cout<<"entry="<<entry<<std::endl;
     _TREE.GetEntry(entry); 
     
-    if (_TREE.treeLeaf.run==258706){
+    // if (_TREE.treeLeaf.run==258706){
       //basic pre-selection corrected. 
       //today, testing the minimum settings...
       if (_TREE.treeLeaf.nPho>0){ //at least one photon 
-	//	if ( (_TREE.treeLeaf.HLTEleMuX>>7)&1 ){ //electron trigger path is fired
-	  if( _TREE.treeLeaf.nEle > 1 ){ //
+	if( _TREE.treeLeaf.nEle > 1 ){ //electrons
+	  //if( _TREE.treeLeaf.nMu> 1 ){ // muons
 	    gWrite =true;
 	  }
 	  // if( _mSize >1){
 	  //   if ( (_TREE.treeLeaf.HLTEleMuX>>20)&1 && _TREE.treeLeaf.muPt->at(0) > 20 ) gWrite =true;
 	  // }
 	  //}
-      }
+      
       
       if(gWrite) _outputTree->Fill();
     }

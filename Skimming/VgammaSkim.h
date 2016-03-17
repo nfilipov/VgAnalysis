@@ -53,26 +53,25 @@ class VgammaSkim{
   TLorentzVector photon;
   TLorentzVector llg;
   bool gWrite ;
-  // some variables for the Filling of events:
-
- float _ePt[100]; 
- float _ePhi[100];
- float _eEta[100];
- vector<float> _llgm;
- vector<float> _llm;
- vector<float> _gammaEt;
- vector<float> _deltaR;
- float _goodPhotonsEt[100];
- int iip;
- float Mll;
- float _llpt[100];
- float _llphi[100];
- float _lleta[100];
- float _phoEt[100];
- float _phoEta[100];
- float _phoPhi[100];
- float dR1=0;
- float dR2=0;
+  // some variables for the Filling of events: UNUSED !
+  float _ePt[100]; 
+  float _ePhi[100];
+  float _eEta[100];
+  vector<float> _llgm;
+  vector<float> _llm;
+  vector<float> _gammaEt;
+  vector<float> _deltaR;
+  float _goodPhotonsEt[100];
+  int iip;
+  float Mll;
+  float _llpt[100];
+  float _llphi[100];
+  float _lleta[100];
+  float _phoEt[100];
+  float _phoEta[100];
+  float _phoPhi[100];
+  float dR1=0;
+  float dR2=0;
 };
 
 #endif

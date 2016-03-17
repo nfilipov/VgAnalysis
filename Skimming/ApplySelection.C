@@ -319,7 +319,7 @@ void ApplySelection()
   _zgt->Branch("phoPFPhoIso",&phoPFPhoIso);
   _zgt->Branch("phoPFChWorstIso",&phoPFChWorstIso);
   _zgt->Branch("phoR9",&phoR9);
-  _zgt->Branch("phoR9Full5x5",&phoR9Full5x5);
+  _zgt->Branch("phoR9Full5x5",&phoR9Full5x5); /// test, not used further.
   //muons
   // //muon channel
   // _zgt->Branch("nMu",&nMu);
@@ -419,7 +419,7 @@ void ApplySelection()
 		    phoIDMVA->at(ip) > 0.4  /// photon  MVA id
 		    )||
 		   (abs(phoSCEta->at(ip))>1.566  && /// endcap  
-		    phoR9->at(ip) > 0.85    &&       //// R9 (Ming is not cutting on R9)
+		    // phoR9->at(ip) > 0.85    &&       //// removed for now
 		    phoPFChWorstIso->at(ip)<15 &&  /// pho PF charged hadron worst iso
 		    phoPFPhoIso->at(ip)<15 &&      /// PF Photon ECal iso
 		    phoHoverE->at(ip)<0.05 &&      // photon H / E
@@ -438,7 +438,7 @@ void ApplySelection()
 		      if (((  abs(eleSCEta->at(ie))<0.8 && ( eleIDMVATrg->at(ie)>0.972153 ))
 			   ||((abs(eleSCEta->at(ie))>0.8 && abs(eleSCEta->at(ie))<1.479) && eleIDMVATrg->at(ie)>0.922126)
 			   ||( (abs(eleSCEta->at(ie))>1.479 && abs(eleSCEta->at(ie))<2.5) && eleIDMVATrg->at(ie)>0.610764 
-			       )//risky business
+			       )
 			   )// && (eleConvVeto->at(ie)==true)
 			  )
 			{	   
@@ -479,8 +479,8 @@ void ApplySelection()
 					  )
 					{	   
 					  if((abs(eleSCEta->at(ie2))<1.479   &&     /// barrel
-					      eledEtaAtVtx->at(ie2)<0.0095 &&     /// dEtaIN
-					      eledPhiAtVtx->at(ie2)<0.065 &&     /// dPhiIn
+					      abs(eledEtaAtVtx->at(ie2))<0.0095 &&     /// dEtaIN
+					      abs(eledPhiAtVtx->at(ie2))<0.065 &&     /// dPhiIn
 					      eleDr03TkSumPt->at(ie2)/_ePt[ie2]<0.18  &&    /// Trk iso
 					      elePFClusEcalIso->at(ie2)/_ePt[ie2]<0.37   &&   /// ecal iso
 					      elePFClusHcalIso->at(ie2)/_ePt[ie2]<0.25  &&   /// hcal iso

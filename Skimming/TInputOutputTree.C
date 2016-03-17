@@ -781,9 +781,5 @@ void TInputOutputTree::InitOutput(TTree* outputTree,bool isMC)
   outputTree->Branch("pfMETsumEt",&treeLeaf.pfMETsumEt,"pfMETsumEt/F");
   outputTree->Branch("pfMETmEtSig",&treeLeaf.pfMETmEtSig,"pfMETmEtSig");
   outputTree->Branch("pfMETSig",&treeLeaf.pfMETSig,"pfMETSig");
-        
-  //  outputTree->Branch("eeMass"      ,&outLeaf.eeMass);
-  // outputTree->Branch("eegMass"     ,&outLeaf.eegMass);
-  // outputTree->Branch("gammaEt"     ,&outLeaf.gammaEt);
-  // outputTree->Branch("deltaR"     ,&outLeaf.deltaR);
+
 }
