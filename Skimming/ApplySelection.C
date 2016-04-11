@@ -15,13 +15,11 @@ float deltaR(float eta0, float eta1, float phi0, float phi1){
 
 void ApplySelection()
 {
- //this time, apply it for real
-  TString _inputFileName("DoubleEG_Run2015D_PR_v4_run258706.root"); // DoubleEG_Run2015D_PR_v4.root or others, like Run2015[C/D]_Oct05
-  // TString _inputFileName("DoubleEG_Run2015D_PR_v4.root"); // 
+
+  //  TString _inputFileName("DoubleEG_Run2015D_PR_v4_run258706.root"); // DoubleEG_Run2015D_PR_v4.root or others, like Run2015[C/D]_Oct05
+  TString _inputFileName("DYJetsToLL_M-50.root");
+  //TString _inputFileName("DoubleEG_Run2015D_PR_v4.root"); // 
   TString _inputFilePrefix("/afs/cern.ch/work/n/nfilipov/private/Vgamma/CMSSW_7_4_14/src/VgAnalysis/Skimming/");
-  //  TString _inputFilePrefix("/afs/cern.ch/work/n/nfilipov/public/Zgamma"); ///for Mate
-  //  TString _inputFileName("DoubleEG_Run2015D_PR_v4_run258706.root"); // 
-   //   TString _inputFileName("DYJetsToLL_M-50.root");
   TFile *f = TFile::Open(_inputFilePrefix+_inputFileName,"READ");
   std::cout<<"processing "<<_inputFileName<<std::endl;
   TTree* tree =(TTree*)f->Get("EventTree");
@@ -67,6 +65,20 @@ void ApplySelection()
   std::vector<float> *ZeegMass=0;
   std::vector<float> *ZeegMt=0;
 
+  //for later
+  TLorentzVector Zmm[1000]= {}; // Z candidates and its properties
+  std::vector<float> *ZmmPt=0;
+  std::vector<float> *ZmmRapidity=0;
+  std::vector<float> *ZmmMass=0;
+  std::vector<float> *ZmmPhi=0;
+  std::vector<float> *ZmmMt=0;
+  TLorentzVector Zmmg[200]= {}; // Zg candidates and its properties
+  std::vector<float> *ZmmgPt=0;
+  std::vector<float> *ZmmgPhi=0;
+  std::vector<float> *ZmmgRapidity=0;
+  std::vector<float> *ZmmgMass=0;
+  std::vector<float> *ZmmgMt=0;
+
   TLorentzVector ll[1000]={}; // Z candidates
   TLorentzVector llg[1000]={}; // Zg candidates
 
@@ -81,7 +93,7 @@ void ApplySelection()
   // TBranch *b_mll;
   // TBranch *b_phoEt;
   // TBranch *b_dr;
-  //  nentries = 200000;
+  nentries = 200;
 
   gROOT->ProcessLine("#include <vector>");
   //global event variables
@@ -215,7 +227,7 @@ void ApplySelection()
   tree->SetBranchAddress("phoPFPhoIso",&phoPFPhoIso);
   tree->SetBranchAddress("phoPFChWorstIso",&phoPFChWorstIso);
   tree->SetBranchAddress("phoR9",&phoR9);
-  tree->SetBranchAddress("phoR9Full5x5",&phoR9Full5x5);
+  //  tree->SetBranchAddress("phoR9Full5x5",&phoR9Full5x5);
   //moun variables
   //muon
   Int_t          nMu;
@@ -273,21 +285,21 @@ void ApplySelection()
   // _zgt->Branch("nVtx",                 &nVtx,       "nVtx/I");
   _zgt->Branch("run",                  &run,        "run/I");
   _zgt->Branch("event",                &event,      "event/L");
-  //  _zgt->Branch("phoEt",                &phoEt	 );  
+  _zgt->Branch("phoEt",                &phoEt	 );  
   _zgt->Branch("lumis",                &lumis,      "lumis/I");
-  // _zgt->Branch("isData",               &isData,     "isData/O");
-  // _zgt->Branch("nTrksPV",              &nTrksPV,    "nVtxPV/I");
-  // _zgt->Branch("vtx",                  &vtx,        "vtx/F"); 
-  // _zgt->Branch("vty",                  &vty,        "vty/F"); 
-  // _zgt->Branch("vtz",                  &vtz,        "vtz/F"); 
-  // _zgt->Branch("rho",                  &rho,        "rho/F");
-  // _zgt->Branch("rhoCentral",           &rhoCentral, "rhoCentral/F");
-  // _zgt->Branch("HLTEleMuX",            &HLTEleMuX, "HLTEleMuX/l");
-  // _zgt->Branch("HLTPho",               &HLTPho, "HLTPho/l");
-  // _zgt->Branch("HLTJet",               &HLTJet, "HLTJet/l");
-  // _zgt->Branch("HLTEleMuXIsPrescaled", &HLTEleMuXIsPrescaled, "HLTEleMuXIsPrescaled/l");
-  // _zgt->Branch("HLTPhoIsPrescaled",    &HLTPhoIsPrescaled, "HLTPhoIsPrescaled/l");
-  // _zgt->Branch("HLTJetIsPrescaled",    &HLTJetIsPrescaled, "HLTJetIsPrescaled/l");
+  _zgt->Branch("isData",               &isData,     "isData/O");
+  _zgt->Branch("nTrksPV",              &nTrksPV,    "nVtxPV/I");
+  _zgt->Branch("vtx",                  &vtx,        "vtx/F"); 
+   _zgt->Branch("vty",                  &vty,        "vty/F"); 
+   _zgt->Branch("vtz",                  &vtz,        "vtz/F"); 
+   _zgt->Branch("rho",                  &rho,        "rho/F");
+  _zgt->Branch("rhoCentral",           &rhoCentral, "rhoCentral/F");
+  _zgt->Branch("HLTEleMuX",            &HLTEleMuX, "HLTEleMuX/l");
+  _zgt->Branch("HLTPho",               &HLTPho, "HLTPho/l");
+  _zgt->Branch("HLTJet",               &HLTJet, "HLTJet/l");
+  _zgt->Branch("HLTEleMuXIsPrescaled", &HLTEleMuXIsPrescaled, "HLTEleMuXIsPrescaled/l");
+  _zgt->Branch("HLTPhoIsPrescaled",    &HLTPhoIsPrescaled, "HLTPhoIsPrescaled/l");
+  _zgt->Branch("HLTJetIsPrescaled",    &HLTJetIsPrescaled, "HLTJetIsPrescaled/l");
   //electrons
   _zgt->Branch("nEle",&nEle);
   _zgt->Branch("elePt",&elePt);
@@ -308,6 +320,7 @@ void ApplySelection()
   //photons
   _zgt->Branch("nPho",&nPho);
   _zgt->Branch("phoEt",&phoEt);
+  //  _zgt->Branch("phoEt",&phoCalibEt)
   _zgt->Branch("phoPhi",&phoPhi);
   _zgt->Branch("phoEta",&phoEta);
   _zgt->Branch("phohasPixelSeed",&phohasPixelSeed);
@@ -319,7 +332,7 @@ void ApplySelection()
   _zgt->Branch("phoPFPhoIso",&phoPFPhoIso);
   _zgt->Branch("phoPFChWorstIso",&phoPFChWorstIso);
   _zgt->Branch("phoR9",&phoR9);
-  _zgt->Branch("phoR9Full5x5",&phoR9Full5x5); /// test, not used further.
+  //  _zgt->Branch("phoR9Full5x5",&phoR9Full5x5); /// test, not used further.
   //muons
   // //muon channel
   // _zgt->Branch("nMu",&nMu);
@@ -419,7 +432,7 @@ void ApplySelection()
 		    phoIDMVA->at(ip) > 0.4  /// photon  MVA id
 		    )||
 		   (abs(phoSCEta->at(ip))>1.566  && /// endcap  
-		    // phoR9->at(ip) > 0.85    &&       //// removed for now
+		    phoR9->at(ip) > 0.85    &&       //// removed for now
 		    phoPFChWorstIso->at(ip)<15 &&  /// pho PF charged hadron worst iso
 		    phoPFPhoIso->at(ip)<15 &&      /// PF Photon ECal iso
 		    phoHoverE->at(ip)<0.05 &&      // photon H / E
@@ -441,21 +454,22 @@ void ApplySelection()
 			       )
 			   )// && (eleConvVeto->at(ie)==true)
 			  )
-			{	   
+			{
+			  std::cout<<"run="<<run<<", lumi= "<<lumis<<" , event="<<event<<std::endl;	   
 			  if((abs(eleSCEta->at(ie))<1.479   &&     /// barrel
 			      abs(eledEtaAtVtx->at(ie))<0.0095 &&     /// dEtaIN
 			      abs(eledPhiAtVtx->at(ie))<0.065 &&     /// dPhiIn
 			      eleDr03TkSumPt->at(ie)/_ePt[ie]<0.18  &&    /// Trk iso
-			      elePFClusEcalIso->at(ie)/_ePt[ie]<0.37   &&   /// ecal iso
-			      elePFClusHcalIso->at(ie)/_ePt[ie]<0.25  &&   /// hcal iso
+			      //elePFClusEcalIso->at(ie)/_ePt[ie]<0.37   &&   /// ecal iso
+			      //elePFClusHcalIso->at(ie)/_ePt[ie]<0.25  &&   /// hcal iso
 			      eleHoverE->at(ie)<0.09 &&           /// H/E
 			      eleSigmaIEtaIEtaFull5x5->at(ie)<0.012
 			      ) /// sig_ietaieta
 			     ||
 			     (abs(eleSCEta->at(ie))>1.479  &&    ////endcaps
 			      eleDr03TkSumPt->at(ie)/_ePt[ie]<0.18 &&    /// trk iso
-			      elePFClusEcalIso->at(ie)/_ePt[ie]<0.45  &&  ///ecal iso
-			      elePFClusHcalIso->at(ie)/_ePt[ie]<0.28 &&   /// Hcal iso.
+			      //elePFClusEcalIso->at(ie)/_ePt[ie]<0.45  &&  ///ecal iso
+			      //elePFClusHcalIso->at(ie)/_ePt[ie]<0.28 &&   /// Hcal iso.
 			      eleHoverE->at(ie)<0.09 &&          /// H/E
 			      eleSigmaIEtaIEtaFull5x5->at(ie)<0.033
 			      )) ////Sig_ietaieta
@@ -482,22 +496,23 @@ void ApplySelection()
 					      abs(eledEtaAtVtx->at(ie2))<0.0095 &&     /// dEtaIN
 					      abs(eledPhiAtVtx->at(ie2))<0.065 &&     /// dPhiIn
 					      eleDr03TkSumPt->at(ie2)/_ePt[ie2]<0.18  &&    /// Trk iso
-					      elePFClusEcalIso->at(ie2)/_ePt[ie2]<0.37   &&   /// ecal iso
-					      elePFClusHcalIso->at(ie2)/_ePt[ie2]<0.25  &&   /// hcal iso
+					      //elePFClusEcalIso->at(ie2)/_ePt[ie2]<0.37   &&   /// ecal iso
+					      //elePFClusHcalIso->at(ie2)/_ePt[ie2]<0.25  &&   /// hcal iso
 					      eleHoverE->at(ie2)<0.09 &&           /// H/E
 					      eleSigmaIEtaIEtaFull5x5->at(ie2)<0.012
 					      ) /// sig_ietaieta
 					     ||
 					     (abs(eleSCEta->at(ie2))>1.479  &&    ////endcaps
 					      eleDr03TkSumPt->at(ie2)/_ePt[ie2]<0.18 &&    /// trk iso
-					      elePFClusEcalIso->at(ie2)/_ePt[ie2]<0.45  &&  ///ecal iso
-					      elePFClusHcalIso->at(ie2)/_ePt[ie2]<0.28 &&   /// Hcal iso.
+					      //elePFClusEcalIso->at(ie2)/_ePt[ie2]<0.45  &&  ///ecal iso
+					      //elePFClusHcalIso->at(ie2)/_ePt[ie2]<0.28 &&   /// Hcal iso.
 					      eleHoverE->at(ie2)<0.09 &&          /// H/E
 					      eleSigmaIEtaIEtaFull5x5->at(ie2)<0.033
 					      )) ////Sig_ietaieta
 					    {
 					      ///second electron passes ID cuts. compute DR2
 					      dr2=deltaR(_eSCEta[ie2],phoSCEta->at(ip),_ePhi[ie2],phoPhi->at(ip));
+					      std::cout<<"here"<<std::endl;	   
 					      if (dr2>0.7)
 						{
 						  if ((_ePt[ie] > 20 && _ePt[ie2] > 15)||( _ePt[ie] > 15 && _ePt[ie2] > 20))
@@ -569,6 +584,8 @@ void ApplySelection()
   // hPhotons->SaveAs("test_cuts.root");
 
   _zgt->GetDirectory()->cd();
+  TH1F *h2 = (TH1F*)f->Get("hPUTrue");
+  h2->Write();
   zgf->Write();
 }
 

@@ -54,10 +54,10 @@ void VgammaSkim::LoopOverInputTree(bool isMC)
   Long64_t nentries = _TREE.fChain->GetEntries();
   std::cout<<"nentries "<<nentries<<std::endl;
   // if (_isDebugMode)
-  //  nentries=1e5;
+  // nentries=5e3;
 
   //  for (Long64_t entry=17023372; entry<19037962; entry++) { //electrons
-  // for (Long64_t entry=16108076; entry<17225997; entry++){  //muons in run 258706
+  //xfor (Long64_t entry=16108076; entry<17225997; entry++){  //muons in run 258706
   for (Long64_t entry=0; entry<nentries; entry++){  //general setup
     //bool simple=true;
     gWrite=false; // tells us what events to print to skim.
@@ -78,7 +78,7 @@ void VgammaSkim::LoopOverInputTree(bool isMC)
       if (_TREE.treeLeaf.nPho>0){ //at least one photon 
 	if( _TREE.treeLeaf.nEle > 1 ){ //electrons
 	  //if( _TREE.treeLeaf.nMu> 1 ){ // muons
-	    gWrite =true;
+	  gWrite =true;
 	  }
 	  // if( _mSize >1){
 	  //   if ( (_TREE.treeLeaf.HLTEleMuX>>20)&1 && _TREE.treeLeaf.muPt->at(0) > 20 ) gWrite =true;
@@ -95,10 +95,14 @@ void VgammaSkim::LoopOverInputTree(bool isMC)
   }//end of entry loop
   
 
-  _fileOut->cd();
+
   // _fileOut->cd(_nameDir);
+  TH1F * hpu = new TH1F ();
+  hpu = (TH1F*) gROOT->FindObject("hPUTrue");
+  _fileOut->cd();
+  hpu->Write();
+  std::cout << "There there!"<< std::endl;
   _outputTree->Write(_nameTree,TObject::kOverwrite);
-  
   //close output files
   _TREE.fChain = 0;
   std::cout<<"file "<<_fileOut->GetName()<<std::endl<<" closed..."<<std::endl;
